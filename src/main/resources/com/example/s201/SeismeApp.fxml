@@ -5,11 +5,31 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeApp">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeApp" stylesheets="style.css">
+    <top>
+        <HBox spacing="1150">
+            <Button text="Courbe"/>
+            <HBox spacing="50">
+                <Button text="Insérer"/>
+                <Button text="Réinitialiser"/>
+            </HBox>
+        </HBox>
+    </top>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!"/>
-</VBox>
+    <center>
+        <HBox>
+            <!-- première partie contenant la map-->
+            <VBox>
+                <!-- deuxième partie contenant le camembert et l'affichage de la moyenne-->
+            </VBox>
+            <!-- troisième partie contenant le filtre qui peut est une Vbox-->
+        </HBox>
+    </center>
+
+    <bottom>
+        <!-- BarChart-->
+    </bottom>
+
+</BorderPane>
