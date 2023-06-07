@@ -7,12 +7,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeApp" stylesheets="style.css">
+<BorderPane fx:id="root" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="style.css">
     <top>
         <HBox spacing="1150">
             <Button text="Courbe"/>
             <HBox spacing="50">
-                <Button text="Insérer"/>
+                <Button text="Insérer" onAction="#insererBouton"/>
                 <Button text="Réinitialiser"/>
             </HBox>
         </HBox>

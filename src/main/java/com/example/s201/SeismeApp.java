@@ -11,7 +11,7 @@ public class SeismeApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SeismeApp.class.getResource("SeismeApp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1440, 1024);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Application sur les séismes");
         stage.setScene(scene);
         stage.show();
