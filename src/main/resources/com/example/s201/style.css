@@ -1,7 +1,51 @@
-BorderPane {
-    -fx-background-color: "#0F3C4C";
+BorderPane{
+    -fx-background-color: "#0f3c4c";
 }
 
-top{
-    -fx-background-color: "#0F3C4C";
+#header {
+    -fx-background-color: white;
+    -fx-padding: 5 5 5 5;
+}
+
+#centre {
+    -fx-padding: 25 25 25 25;
+}
+
+#carte {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
+#camembert {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
+#vBoxMoyenne {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
+#moyenne {
+    -fx-font-size: 60px;
+}
+
+#filtrer {
+    -fx-background-color: white;
+    -fx-start-margin: 15;
+    -fx-padding: 5 5 5 5;
+    -fx-background-radius: 15;
+}
+
+Button {
+    -fx-background-color: "#0f3c4c";
+    -fx-text-fill: white;
+}
+
+TextField, #regions {
+    -fx-border-style: solid;
+}
+
+Label{
+    -fx-font-size: 15px;
 }

@@ -7,11 +7,22 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane fx:id="root" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="style.css">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import java.lang.String?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<BorderPane prefWidth="1440" prefHeight="1024" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
-        <HBox spacing="1150">
+        <HBox fx:id="header" spacing="1150" minHeight="40" alignment="CENTER_LEFT">
             <Button text="Courbe"/>
-            <HBox spacing="50">
+            <HBox spacing="50" alignment="CENTER_RIGHT">
                 <Button text="Insérer" onAction="#insererBouton"/>
                 <Button text="Réinitialiser"/>
             </HBox>
@@ -19,17 +30,55 @@
     </top>
 
     <center>
-        <HBox>
+        <HBox fx:id="centre" spacing="50">
             <!-- première partie contenant la map-->
-            <VBox>
+            <AnchorPane fx:id="carte" prefWidth="607" prefHeight="589">
+            </AnchorPane>
+            <VBox spacing="50">
                 <!-- deuxième partie contenant le camembert et l'affichage de la moyenne-->
+                <PieChart fx:id="camembert" prefWidth="268" prefHeight="268">
+                </PieChart>
+                <VBox fx:id="vBoxMoyenne" spacing="10" prefWidth="268" prefHeight="268" alignment="CENTER">
+                    <Label fx:id="moyenne" text="--"/>
+                    <Label text="Intensité moyenne"/>
+                </VBox>
             </VBox>
             <!-- troisième partie contenant le filtre qui peut est une Vbox-->
+            <VBox fx:id="filtrer" spacing="10" prefWidth="416" prefHeight="589">
+                <Label text="Filtrer"/>
+                <GridPane hgap="50" vgap="20">
+                    <Label text="Nom de la région : " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ChoiceBox fx:id="regions" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                        <!-- Ajouter les valeurs-->
+                    </ChoiceBox>
+                    <Label text="De " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField text="ex : 01/01/23" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="A " GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField text="ex : 31/12/23" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Label text="Intensité entre : " GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                </GridPane>
+                <Slider fx:id="sliderMin" min="2" max="12" majorTickUnit="2" showTickLabels="true" showTickMarks="true"/>
+                <Label text="et " GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Slider fx:id="sliderMax" min="2" max="12" majorTickUnit="2" showTickLabels="true" showTickMarks="true" />
+                <Button text="Actualiser" alignment="CENTER"/>
+            </VBox>
         </HBox>
     </center>
 
     <bottom>
         <!-- BarChart-->
+        <BarChart fx:id="diagrammeBandes">
+            <xAxis> <!-- Axe des x avec les régions-->
+                <CategoryAxis>
+
+                </CategoryAxis>
+            </xAxis>
+            <yAxis>
+                <NumberAxis>
+
+                </NumberAxis>
+            </yAxis>
+        </BarChart>
     </bottom>
 
 </BorderPane>
