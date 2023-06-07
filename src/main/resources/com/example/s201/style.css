@@ -1,5 +1,6 @@
 BorderPane{
     -fx-background-color: "#0f3c4c";
+    -fx-padding: 0 0 5 0;
 }
 
 #header {
@@ -33,12 +34,26 @@ BorderPane{
 #filtrer {
     -fx-background-color: white;
     -fx-start-margin: 15;
-    -fx-padding: 5 5 5 5;
+    -fx-padding: 10 10 10 10;
     -fx-background-radius: 15;
+}
+
+#filtrerLabel {
+    -fx-font-size: 25px;
+}
+
+#diagrammeBandes {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+}
+
+bas {
+    -fx-padding: 25 25 25 25;
 }
 
 Button {
     -fx-background-color: "#0f3c4c";
+    -fx-background-radius: 5;
     -fx-text-fill: white;
 }
 
