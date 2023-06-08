@@ -18,9 +18,9 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<BorderPane fx:id="root" prefWidth="1440" prefHeight="1024" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
+<BorderPane fx:id="root" prefWidth="1340" prefHeight="824" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
-        <HBox fx:id="header" spacing="1150" prefHeight="50" alignment="CENTER_LEFT">
+        <HBox fx:id="header" spacing="1050" prefHeight="50" alignment="CENTER_LEFT">
             <Button text="Courbe"/>
             <HBox spacing="50" alignment="CENTER_RIGHT">
                 <Button text="Insérer" onAction="#insererBouton"/>
@@ -30,13 +30,13 @@
     </top>
 
     <center>
-        <HBox fx:id="centre" spacing="50" prefHeight="589">
+        <HBox fx:id="centre" spacing="25" prefHeight="589">
 
             <!-- première partie contenant la carte de la France-->
 
-            <AnchorPane fx:id="carte" prefWidth="607" prefHeight="589">
+            <AnchorPane fx:id="carte" prefWidth="589" prefHeight="589">
             </AnchorPane>
-            <VBox spacing="150">
+            <VBox spacing="25">
 
             <!-- deuxième partie contenant le camembert et l'affichage de la moyenne-->
 
@@ -50,7 +50,7 @@
 
             <!-- troisième partie contenant le filtre dans une Vbox-->
 
-            <VBox fx:id="filtrer" spacing="60" prefWidth="416" prefHeight="589">
+            <VBox fx:id="filtrer" spacing="30" prefWidth="416" prefHeight="589">
                 <Label fx:id="filtrerLabel" text="Filtrer"/>
                 <GridPane hgap="65" vgap="20">
                     <Label text="Nom de la région : " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -74,7 +74,7 @@
     <bottom>
         <!-- Diagramme en bandes-->
         <HBox fx:id="bas" alignment="CENTER">
-            <BarChart fx:id="diagrammeBandes" prefWidth="1389" prefHeight="230">
+            <BarChart fx:id="diagrammeBandes" prefWidth="1273" prefHeight="230">
                 <xAxis> <!-- Axe des x avec les régions-->
                     <CategoryAxis>
 
