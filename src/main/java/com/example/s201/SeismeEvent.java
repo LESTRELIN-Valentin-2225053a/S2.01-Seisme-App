@@ -56,7 +56,7 @@ public class SeismeEvent {
             int intValue = newValue.intValue();
         });
 
-        //Initialisation de la comboBox
+        //Initialisation de la ChoiceBox
         regionsList.add("AUVERGNE-RHÔNE-ALPES");
         regionsList.add("BOURGOGNE-FRANCHE-COMTÉ");
         regionsList.add("BRETAGNE");
