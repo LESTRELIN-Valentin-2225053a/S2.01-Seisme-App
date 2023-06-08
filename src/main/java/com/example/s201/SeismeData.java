@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 
 public class SeismeData implements Initializable {
@@ -21,6 +22,8 @@ public class SeismeData implements Initializable {
     private static ObservableList<XYChart.Data<Number, Number>> DonneesBarchart = FXCollections.observableArrayList();
     //Les données pour le barchart
 
+    private static ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList();
+    // Les données pour le camembert
     public static XYChart.Series<Number, Number> SerieDonneesBarchart = new XYChart.Series<>();
     //Contient toutes les données du barchart et permet l'évolution des données;
 
@@ -61,8 +64,36 @@ public class SeismeData implements Initializable {
         }
     }
 
+    //Sert à la visualisation des données pour le graphique en camembert.
+    public void prepDonneesCamembert(List<List<String>> Donnees, int minIntensite, int maxIntensite) {
+        if (DonneesCamembert.size() != 0)
+            DonneesCamembert.removeAll();
+        int count = 0;
+        for (int i = 0; i < Donnees.size(); i += 1) {
+            int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
+            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
+                count++;
+            }
+        }
+        for (int i = 0; i < Donnees.size(); i += 1) {
+            int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
+            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
+                // Calcul du pourcentage en fonction du nombre de séismes correspondant aux critères
+                double percentage = (double) count / Donnees.size() * 100;
+                String categorie = "Catégorie " + (i + 1);
+                // Ajout des données dans la liste DonneesCamembert sous forme de PieChart.Data
+                DonneesCamembert.add(new PieChart.Data(categorie, percentage));
+            }
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SerieDonneesBarchart.setData(DonneesBarchart);
+    }
+
+    //Récupère les données du graphique en camembert.
+    public ObservableList<PieChart.Data> getDonneesCamembert() {
+        return DonneesCamembert;
     }
 }
