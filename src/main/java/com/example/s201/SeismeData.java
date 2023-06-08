@@ -11,11 +11,16 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 
 public class SeismeData implements Initializable {
+
+    @FXML
+    private Label moyenne;
     private static List<List<String>> Donnees = new ArrayList<>();
     // Les données sur les seismes
 
@@ -73,22 +78,31 @@ public class SeismeData implements Initializable {
         if (DonneesCamembert.size() != 0)
             DonneesCamembert.removeAll();
         int count = 0;
+        int totalIntensite = 0; // Ajout de cette variable pour calculer la somme des intensités
+
         for (int i = 0; i < Donnees.size(); i += 1) {
             int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
             if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
                 count++;
+                totalIntensite += tempIntensite; // Ajout de l'intensité à la somme totale
             }
         }
+
         for (int i = 0; i < Donnees.size(); i += 1) {
             int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
             if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
-                // Calcul du pourcentage en fonction du nombre de séismes correspondant aux critères
                 double percentage = (double) count / Donnees.size() * 100;
                 String categorie = "Catégorie " + (i + 1);
-                // Ajout des données dans la liste DonneesCamembert sous forme de PieChart.Data
                 DonneesCamembert.add(new PieChart.Data(categorie, percentage));
             }
         }
+
+        // Calcul de la moyenne des intensités correspondant aux critères
+        double moyenneIntensite = calculateMoyenneIntensite(Donnees, minIntensite, maxIntensite);
+
+    // Mise à jour du texte du label moyenne avec la valeur calculée
+        moyenne.setText(String.format("%.2f", moyenneIntensite));
+
     }
 
     @Override
@@ -100,4 +114,23 @@ public class SeismeData implements Initializable {
     public ObservableList<PieChart.Data> getDonneesCamembert() {
         return DonneesCamembert;
     }
+    private double calculateMoyenneIntensite(List<List<String>> Donnees, int minIntensite, int maxIntensite) {
+        int count = 0;
+        int sum = 0;
+
+        for (int i = 0; i < Donnees.size(); i++) {
+            int tempIntensite = Integer.parseInt(Donnees.get(i).get(Donnees.size() - 2));
+            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
+                count++;
+                sum += tempIntensite;
+            }
+        }
+
+        if (count > 0) {
+            return (double) sum / count;
+        } else {
+            return 0.0;
+        }
+    }
+
 }
