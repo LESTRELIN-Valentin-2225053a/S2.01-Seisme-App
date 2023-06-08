@@ -22,7 +22,11 @@ public class SeismeData implements Initializable {
     private static ObservableList<XYChart.Data<Number, Number>> DonneesBarchart = FXCollections.observableArrayList();
     //Les données pour le barchart
 
-    private static ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList();
+    private static ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
+            new PieChart.Data("Segment 1", 30),
+            new PieChart.Data("Segment 2", 20),
+            new PieChart.Data("Segment 3", 50)
+    );
     // Les données pour le camembert
     public static XYChart.Series<Number, Number> SerieDonneesBarchart = new XYChart.Series<>();
     //Contient toutes les données du barchart et permet l'évolution des données;

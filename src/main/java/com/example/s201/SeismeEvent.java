@@ -5,6 +5,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.scene.chart.PieChart;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +16,9 @@ public class SeismeEvent {
     private Label welcomeText;
     @FXML
     private BorderPane root;
+
+    @FXML
+    private PieChart camembert;
 
     @FXML
     private Slider sliderMin;
@@ -83,6 +88,12 @@ public class SeismeEvent {
 
         //Initialisation du Barchart
         diagrammeBandes.getData().add(SeismeData.SerieDonneesBarchart);
+
+        //Initialisation du camembert
+        SeismeData seismeData = new SeismeData();
+        //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
+        camembert.setData(seismeData.getDonneesCamembert());
+
     }
 
     //Cette fonction est utilisé par le bouton "Inserer" et sert à
