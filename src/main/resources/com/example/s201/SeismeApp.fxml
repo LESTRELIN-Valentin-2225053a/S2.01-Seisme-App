@@ -18,9 +18,9 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<BorderPane fx:id="root" prefWidth="1340" prefHeight="824" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
+<BorderPane fx:id="root" prefWidth="1140" prefHeight="724" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
-        <HBox fx:id="header" spacing="1050" prefHeight="50" alignment="CENTER_LEFT">
+        <HBox fx:id="header" spacing="850" prefHeight="30" alignment="CENTER_LEFT">
             <Button text="Courbe"/>
             <HBox spacing="50" alignment="CENTER_RIGHT">
                 <Button text="Insérer" onAction="#insererBouton"/>
@@ -30,19 +30,19 @@
     </top>
 
     <center>
-        <HBox fx:id="centre" spacing="25" prefHeight="589">
+        <HBox fx:id="centre" spacing="15" prefHeight="450">
 
             <!-- première partie contenant la carte de la France-->
 
-            <AnchorPane fx:id="carte" prefWidth="589" prefHeight="589">
+            <AnchorPane fx:id="carte" prefWidth="450" prefHeight="450">
             </AnchorPane>
-            <VBox spacing="25">
+            <VBox spacing="10">
 
             <!-- deuxième partie contenant le camembert et l'affichage de la moyenne-->
 
-                <PieChart fx:id="camembert" prefWidth="268" prefHeight="268">
+                <PieChart fx:id="camembert" prefWidth="250" prefHeight="250">
                 </PieChart>
-                <VBox fx:id="vBoxMoyenne" spacing="10" prefWidth="268" prefHeight="268" alignment="CENTER">
+                <VBox fx:id="vBoxMoyenne" spacing="10" prefWidth="250" prefHeight="250" alignment="CENTER">
                     <Label fx:id="moyenne" text="--"/>
                     <Label text="Intensité moyenne"/>
                 </VBox>
@@ -50,10 +50,10 @@
 
             <!-- troisième partie contenant le filtre dans une Vbox-->
 
-            <VBox fx:id="filtrer" spacing="30" prefWidth="416" prefHeight="589">
+            <VBox fx:id="filtrer" spacing="30" prefWidth="416" prefHeight="450">
                 <Label fx:id="filtrerLabel" text="Filtrer"/>
-                <GridPane hgap="65" vgap="20">
-                    <Label text="Nom de la région : " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <GridPane vgap="20">
+                    <Label text="Région" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                     <ChoiceBox fx:id="regions" GridPane.rowIndex="0" GridPane.columnIndex="1">
                         <!-- Ajouter les valeurs-->
                     </ChoiceBox>
@@ -74,7 +74,7 @@
     <bottom>
         <!-- Diagramme en bandes-->
         <HBox fx:id="bas" alignment="CENTER">
-            <BarChart fx:id="diagrammeBandes" prefWidth="1273" prefHeight="230">
+            <BarChart fx:id="diagrammeBandes" prefWidth="1100" prefHeight="200">
                 <xAxis> <!-- Axe des x avec les régions-->
                     <CategoryAxis>
 
