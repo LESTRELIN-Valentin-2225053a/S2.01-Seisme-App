@@ -1,6 +1,7 @@
 package com.example.s201;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
@@ -18,6 +19,8 @@ public class SeismeEvent {
     private Slider sliderMin;
     @FXML
     private Slider sliderMax;
+    @FXML
+    private BarChart diagrammeBandes;
 
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
@@ -44,9 +47,12 @@ public class SeismeEvent {
         sliderMax.valueProperty().addListener((observable, oldValue, newValue) -> {
             int intValue = newValue.intValue();
         });
+
+        //Initialisation du Barchart
+        diagrammeBandes.getData().add(SeismeData.SerieDonneesBarchart);
     }
 
-    //Cette fonction est utilisé par le bouton "Choisir Données" et sert à
+    //Cette fonction est utilisé par le bouton "Inserer" et sert à
     //choisir le fichier csv que l'on veut. La fonction lancera ensuite les
     // autres fonctions qui vont préparer les données pour l'affichage.
     public void insererBouton(){
