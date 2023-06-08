@@ -2,9 +2,7 @@ package com.example.s201;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
@@ -27,9 +25,14 @@ public class SeismeEvent {
     private ChoiceBox regions;
     ArrayList<String> regionsList = new ArrayList<>();
 
+    @FXML
+    private TextField dateDebut;
+    @FXML
+    private TextField dateFin;
+
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
-    public void initialize(){
+    public void initialize() {
         //Initialisation du slider minimum
         sliderMin.setBlockIncrement(1);
         sliderMin.setShowTickLabels(true);
@@ -85,15 +88,45 @@ public class SeismeEvent {
     //Cette fonction est utilisé par le bouton "Inserer" et sert à
     //choisir le fichier csv que l'on veut. La fonction lancera ensuite les
     // autres fonctions qui vont préparer les données pour l'affichage.
-    public void insererBouton(){
+    public void insererBouton() {
         FileChooser choixFichier = new FileChooser();
         File fichierCSV = choixFichier.showOpenDialog(root.getScene().getWindow());
-        if (fichierCSV != null){
+        if (fichierCSV != null) {
             //lance la configuration du CSV
             SeismeData.lectureCSV(fichierCSV);
-        }
-        else{
+        } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
         }
     }
+
+    //Cette méthode est utilisé pour savoir si une date passé en paramètre
+    //respecte le bon format classique utilisé en france, 00/00/0000
+    public boolean isValidDate(String date) {
+        String datePattern = "^(0?[1-9]|1[0-9]|2[0-9]|3[01])/(0?[1-9]|1[012])/\\d{4}$";
+        return date.matches(datePattern);
+    }
+
+    //Cette méthode est utilisé pour afficher une alerte avec un message entré en paramètre
+    public void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Vérification de format");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    //Les deux prochaines méthodes sont utilisées pour affichier une erreur
+    //si la date saisi dans les textField ne correspondent pas au format souhaité
+    @FXML
+    public void textFiel1dOnAction() {
+        String date = dateDebut.getText();
+        if (!isValidDate(date)) showAlert("Format de date invalide !");
+    }
+    @FXML
+    public void textFiel2dOnAction() {
+        String date = dateFin.getText();
+        if (!isValidDate(date)) showAlert("Format de date invalide !");
+    }
+
+
 }
