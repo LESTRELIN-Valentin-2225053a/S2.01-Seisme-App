@@ -24,7 +24,7 @@
             <Button text="Courbe"/>
             <HBox spacing="50" alignment="CENTER_RIGHT">
                 <Button text="Insérer" onAction="#insererBouton"/>
-                <Button text="Réinitialiser"/>
+                <Button text="Réinitialiser" onAction="#ReinitialiserOnAction"/>
             </HBox>
         </HBox>
     </top>

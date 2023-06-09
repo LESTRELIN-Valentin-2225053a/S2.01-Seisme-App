@@ -100,7 +100,7 @@ public class SeismeData implements Initializable {
         // Calcul de la moyenne des intensités correspondant aux critères
         double moyenneIntensite = calculateMoyenneIntensite(Donnees, minIntensite, maxIntensite);
 
-    // Mise à jour du texte du label moyenne avec la valeur calculée
+        // Mise à jour du texte du label moyenne avec la valeur calculée
         moyenne.setText(String.format("%.2f", moyenneIntensite));
 
     }

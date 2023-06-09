@@ -139,5 +139,14 @@ public class SeismeEvent {
         if (!isValidDate(date)) showAlert("Format de date invalide !");
     }
 
+    @FXML
+    public void ReinitialiserOnAction(){
+        regions.setValue(null);
+        dateDebut.setText(null);
+        dateFin.setText(null);
+        sliderMin.setValue(2);
+        sliderMax.setValue(12);
+    }
+
 
 }
