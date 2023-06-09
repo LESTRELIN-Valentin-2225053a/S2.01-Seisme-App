@@ -37,6 +37,10 @@ public class SeismeEvent {
 
     @FXML
     private Button diagrammeEnBandes;
+    @FXML
+    private  Button actualiser;
+    @FXML
+    private Button courbeButton;
 
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
@@ -160,17 +164,24 @@ public class SeismeEvent {
          - déclarer la LineChart avec les bons paramètres
          - et on l'affiche dans la HBox : bas.getChildren().add(Nom de la LineChart);
         */
+
+        courbeButton.setDisable(true);
         diagrammeEnBandes.setDisable(false);
-
-
+    }
+    @FXML
+    public void diagrammeOnAction(){
+        courbeButton.setDisable(false);
+        diagrammeEnBandes.setDisable(true);
     }
     @FXML
     public void actualiserOnAction(){
         /*
         Afficher les données sur la BarChart
          */
-
+        diagrammeEnBandes.setDisable(true);
+        courbeButton.setDisable(false);
     }
+
 
 
 }

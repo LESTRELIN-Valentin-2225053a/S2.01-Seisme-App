@@ -22,8 +22,8 @@
     <top>
         <HBox fx:id="header" spacing="300" prefHeight="30">
             <HBox spacing="20" alignment="CENTER_LEFT">
-            <Button text="Courbe"/>
-            <Button fx:id="diagrammeEnBandes" text="Diagamme en Bandes"/>
+            <Button fx:id="courbeButton" text="Courbe" onAction="#courbeOnAction"/>
+            <Button fx:id="diagrammeEnBandes" text="Diagamme en Bandes" onAction="#diagrammeOnAction"/>
             </HBox>
             <Label fx:id="seismes" text="Séismes"/>
             <HBox spacing="20" alignment="CENTER_RIGHT">
@@ -72,7 +72,7 @@
                 <Slider fx:id="sliderMin" min="2" max="12" majorTickUnit="1" showTickLabels="true" showTickMarks="true"/>
                 <Label text="et " GridPane.rowIndex="4" GridPane.columnIndex="0"/>
                 <Slider fx:id="sliderMax"  max="12" majorTickUnit="1" showTickLabels="true" showTickMarks="true" />
-                <Button text="Actualiser" alignment="CENTER"/>
+                <Button fx:id="actualiser" text="Actualiser" alignment="CENTER" onAction="#actualiserOnAction"/>
             </VBox>
         </HBox>
     </center>
