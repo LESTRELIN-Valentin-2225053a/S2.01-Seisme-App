@@ -33,6 +33,9 @@ public class SeismeData implements Initializable {
             new PieChart.Data("Segment 3", 50)
     );
     // Les données pour le camembert
+
+    private static ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
+    // Les données pour la LineChart
     public static XYChart.Series<Number, Number> SerieDonneesBarchart = new XYChart.Series<>();
     //Contient toutes les données du barchart et permet l'évolution des données;
 
@@ -131,6 +134,11 @@ public class SeismeData implements Initializable {
         } else {
             return 0.0;
         }
+    }
+
+
+    public void prepdonneesCourbe(List<List<String>> Donnees, int minIntensite, int maxIntensite){
+
     }
 
 }

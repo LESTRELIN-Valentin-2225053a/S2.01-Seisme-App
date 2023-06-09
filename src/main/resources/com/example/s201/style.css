@@ -42,6 +42,10 @@ BorderPane{
     -fx-font-size: 25px;
 }
 
+#seismes {
+    -fx-font-size: 25px;
+}
+
 #diagrammeBandes {
     -fx-background-color: white;
     -fx-background-radius: 15;

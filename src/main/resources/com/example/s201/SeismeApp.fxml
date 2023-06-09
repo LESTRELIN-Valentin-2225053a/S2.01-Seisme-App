@@ -20,11 +20,15 @@
 <?import javafx.scene.chart.NumberAxis?>
 <BorderPane fx:id="root" prefWidth="1140" prefHeight="724" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
-        <HBox fx:id="header" spacing="850" prefHeight="30" alignment="CENTER_LEFT">
+        <HBox fx:id="header" spacing="300" prefHeight="30">
+            <HBox spacing="20" alignment="CENTER_LEFT">
             <Button text="Courbe"/>
-            <HBox spacing="50" alignment="CENTER_RIGHT">
-                <Button text="Insérer" onAction="#insererBouton"/>
-                <Button text="Réinitialiser" onAction="#ReinitialiserOnAction"/>
+            <Button fx:id="diagrammeEnBandes" text="Diagamme en Bandes"/>
+            </HBox>
+            <Label fx:id="seismes" text="Séismes"/>
+            <HBox spacing="20" alignment="CENTER_RIGHT">
+            <Button text="Insérer" onAction="#insererBouton"/>
+            <Button text="Réinitialiser" onAction="#reinitialiserOnAction"/>
             </HBox>
         </HBox>
     </top>

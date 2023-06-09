@@ -35,6 +35,9 @@ public class SeismeEvent {
     @FXML
     private TextField dateFin;
 
+    @FXML
+    private Button diagrammeEnBandes;
+
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
     public void initialize() {
@@ -140,12 +143,33 @@ public class SeismeEvent {
     }
 
     @FXML
-    public void ReinitialiserOnAction(){
+    public void reinitialiserOnAction(){
         regions.setValue(null);
         dateDebut.setText(null);
         dateFin.setText(null);
         sliderMin.setValue(2);
         sliderMax.setValue(12);
+    }
+
+    @FXML
+    public void courbeOnAction(){
+        /* lorsque l'on appuie sur le boutton courbe :
+         - rendre le boutton courbe enable
+         - rendre le boutton bar able
+         - on enlève tous les enfants de la HBox "bas" avec clear : bas.getChildren().clear();
+         - déclarer la LineChart avec les bons paramètres
+         - et on l'affiche dans la HBox : bas.getChildren().add(Nom de la LineChart);
+        */
+        diagrammeEnBandes.setDisable(false);
+
+
+    }
+    @FXML
+    public void actualiserOnAction(){
+        /*
+        Afficher les données sur la BarChart
+         */
+
     }
 
 
