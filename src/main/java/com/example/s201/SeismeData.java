@@ -23,7 +23,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 
-public  class  SeismeData {//implements Initializable {
+public  class  SeismeData { 
 
     @FXML
     private Label moyenne;
@@ -213,8 +213,19 @@ public  class  SeismeData {//implements Initializable {
     }
 
 
-    public void prepdonneesCourbe(List<List<String>> Donnees, int minIntensite, int maxIntensite){
-
+    public static void prepdonneesCourbe(List<List<String>> Donnees, int minDate, int maxDate,
+                                         int minIntensite, int maxIntensite){
+        if (DonneesLineChart.size() != 0)
+            DonneesLineChart.removeAll();
+        for (int i=0; i < Donnees.size(); i+=1) {
+            String[] tempDate = Donnees.get(i).get(1).split("/+");
+            int tempAnnee = Integer.valueOf(tempDate[0]);
+            int tempIntensité = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
+            if (tempIntensité >= minIntensite && tempIntensité <= maxIntensite
+                    && tempAnnee >= minDate && tempAnnee <= maxDate) {
+                DonneesLineChart.add(new XYChart.Data<>(tempAnnee, tempIntensité));
+            }
+        }
     }
 
     public  List<List<String>> getDonnees() {

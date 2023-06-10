@@ -8,13 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import com.example.s201.SeismeData;
 
 
 import java.io.File;
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SeismeEvent {
+public class SeismeEvent{
     @FXML
     private Label welcomeText;
     @FXML
@@ -29,6 +30,10 @@ public class SeismeEvent {
     private Slider sliderMax;
     @FXML
     private BarChart diagrammeBandes;
+
+    NumberAxis xAxis = new NumberAxis();
+    NumberAxis yAxis = new NumberAxis();
+    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
     @FXML
     private ChoiceBox regions;
     ArrayList<String> regionsList = new ArrayList<>();
@@ -107,7 +112,10 @@ public class SeismeEvent {
         diagrammeBandes.getData().add(data.SerieDonneesBarchart);
 
 
+        lineChart.getData().add(SeismeData.SerieDonneesLineChart);
+
         //Initialisation du camembert
+        SeismeData seismeData = new SeismeData();
         //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
         camembert.setData(data.getDonneesCamembert());
 
@@ -150,14 +158,31 @@ public class SeismeEvent {
     //Les deux prochaines méthodes sont utilisées pour affichier une erreur
     //si la date saisi dans les textField ne correspondent pas au format souhaité
     @FXML
-    public void textFiel1dOnAction() {
+    public void textField1dOnAction() {
         String date = dateDebut.getText();
-        if (!isValidDate(date)) showAlert("Format de date invalide !");
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            actualiser.setDisable(true);
+            dateDebut.setText(null);
+        }
+        actualiser.setDisable(true);
     }
     @FXML
-    public void textFiel2dOnAction() {
+    public void textField2dOnAction() {
         String date = dateFin.getText();
-        if (!isValidDate(date)) showAlert("Format de date invalide !");
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            actualiser.setDisable(true);
+            dateFin.setText(null);
+        }
+        else actualiser.setDisable(false);
+
+        if (dateDebut.getText().compareTo(dateFin.getText()) > 0){
+            showAlert("La date de fin doit être supérieure à la date de début !");
+            actualiser.setDisable(true);
+            dateFin.setText(null);
+        }
+        else actualiser.setDisable(false);
     }
 
     @FXML
