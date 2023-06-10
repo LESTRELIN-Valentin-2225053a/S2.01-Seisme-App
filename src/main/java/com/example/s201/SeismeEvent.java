@@ -183,6 +183,7 @@ public class SeismeEvent {
         bas.getChildren().add(lineChart);
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
+        lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
     }
     @FXML
     public void diagrammeOnAction(){
