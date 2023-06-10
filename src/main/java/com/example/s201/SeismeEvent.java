@@ -2,8 +2,11 @@ package com.example.s201;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.scene.chart.PieChart;
 
@@ -41,6 +44,9 @@ public class SeismeEvent {
     private  Button actualiser;
     @FXML
     private Button courbeButton;
+
+    @FXML
+    private HBox bas;
 
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
@@ -155,23 +161,35 @@ public class SeismeEvent {
         sliderMax.setValue(12);
     }
 
+
+
+    NumberAxis xAxis = new NumberAxis();
+    NumberAxis yAxis = new NumberAxis();
+
+    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
     @FXML
     public void courbeOnAction(){
         /* lorsque l'on appuie sur le boutton courbe :
-         - rendre le boutton courbe enable
-         - rendre le boutton bar able
+         - rendre le boutton courbe disable
+         - rendre le boutton barchart able
          - on enlève tous les enfants de la HBox "bas" avec clear : bas.getChildren().clear();
          - déclarer la LineChart avec les bons paramètres
          - et on l'affiche dans la HBox : bas.getChildren().add(Nom de la LineChart);
         */
-
         courbeButton.setDisable(true);
         diagrammeEnBandes.setDisable(false);
+        bas.getChildren().clear();
+        bas.getChildren().add(lineChart);
+        lineChart.setPrefWidth(1100);
+        lineChart.setPrefHeight(200);
     }
     @FXML
     public void diagrammeOnAction(){
         courbeButton.setDisable(false);
         diagrammeEnBandes.setDisable(true);
+        bas.getChildren().clear();
+        bas.getChildren().add(diagrammeBandes);
     }
     @FXML
     public void actualiserOnAction(){
