@@ -130,7 +130,7 @@ public class SeismeEvent {
     //Cette méthode est utilisé pour savoir si une date passé en paramètre
     //respecte le bon format classique utilisé en france, 00/00/0000
     public boolean isValidDate(String date) {
-        String datePattern = "^(0?[1-9]|1[0-9]|2[0-9]|3[01])/(0?[1-9]|1[012])/\\d{4}$";
+        String datePattern = "^\\d{4}/(0?[1-9]|1[012])/(0?[1-9]|1[0-9]|2[0-9]|3[01])$";
         return date.matches(datePattern);
     }
 
