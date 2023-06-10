@@ -12,6 +12,7 @@ import javafx.scene.chart.PieChart;
 
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class SeismeEvent {
@@ -112,12 +113,15 @@ public class SeismeEvent {
     //Cette fonction est utilisé par le bouton "Inserer" et sert à
     //choisir le fichier csv que l'on veut. La fonction lancera ensuite les
     // autres fonctions qui vont préparer les données pour l'affichage.
-    public void insererBouton() {
+    public void insererBouton() throws ParseException {
         FileChooser choixFichier = new FileChooser();
         File fichierCSV = choixFichier.showOpenDialog(root.getScene().getWindow());
         if (fichierCSV != null) {
             //lance la configuration du CSV
             SeismeData.lectureCSV(fichierCSV);
+            SeismeData.minMaxFiltre();
+            SeismeData.prepDonneesBarchart(SeismeData.getDonnees(), SeismeData.getDateMin(), SeismeData.getDateMax(),
+                    SeismeData.getIntensiteMin(), SeismeData.getIntensiteMax());
         } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
         }
