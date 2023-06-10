@@ -21,7 +21,7 @@ public class SeismeData implements Initializable {
 
     @FXML
     private Label moyenne;
-    private static List<List<String>> Donnees = new ArrayList<>();
+    public static List<List<String>> Donnees = new ArrayList<>();
     // Les données sur les seismes
 
     private static ObservableList<XYChart.Data<Number, Number>> DonneesBarchart = FXCollections.observableArrayList();
@@ -36,6 +36,8 @@ public class SeismeData implements Initializable {
     public static XYChart.Series<Number, Number> SerieDonneesBarchart = new XYChart.Series<>();
     //Contient toutes les données du barchart et permet l'évolution des données;
 
+    public static XYChart.Series<Number, Number> SerieDonneesLineChart = new XYChart.Series<>();
+    //Contient toutes les données de la LineChart et permet l'évolution des données;
     private static ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
     // Les données pour la LineChart
 
@@ -111,7 +113,9 @@ public class SeismeData implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SerieDonneesBarchart.setData(DonneesBarchart);
+        SerieDonneesLineChart.setData(DonneesLineChart);
     }
+
 
     //Récupère les données du graphique en camembert.
     public ObservableList<PieChart.Data> getDonneesCamembert() {
@@ -140,17 +144,17 @@ public class SeismeData implements Initializable {
     /*
     * Intensité en fonction de la date
     * */
-    public void prepdonneesCourbe(List<List<String>> Donnees, int minDate,int maxDate,
-                                  int minIntensite, int maxIntensite){
-        if (DonneesBarchart.size() != 0)
-            DonneesBarchart.removeAll();
+    public static void prepdonneesCourbe(List<List<String>> Donnees, int minDate, int maxDate,
+                                         int minIntensite, int maxIntensite){
+        if (DonneesLineChart.size() != 0)
+            DonneesLineChart.removeAll();
         for (int i=0; i < Donnees.size(); i+=1) {
             String[] tempDate = Donnees.get(i).get(1).split("/+");
             int tempAnnee = Integer.valueOf(tempDate[0]);
             int tempIntensité = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
             if (tempIntensité >= minIntensite && tempIntensité <= maxIntensite
                     && tempAnnee >= minDate && tempAnnee <= maxDate) {
-                DonneesBarchart.add(new XYChart.Data<>(tempAnnee, tempIntensité));
+                DonneesLineChart.add(new XYChart.Data<>(tempAnnee, tempIntensité));
             }
         }
     }

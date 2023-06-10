@@ -28,6 +28,10 @@ public class SeismeEvent{
     private Slider sliderMax;
     @FXML
     private BarChart diagrammeBandes;
+
+    NumberAxis xAxis = new NumberAxis();
+    NumberAxis yAxis = new NumberAxis();
+    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
     @FXML
     private ChoiceBox regions;
     ArrayList<String> regionsList = new ArrayList<>();
@@ -100,6 +104,8 @@ public class SeismeEvent{
 
         //Initialisation du Barchart
         diagrammeBandes.getData().add(SeismeData.SerieDonneesBarchart);
+
+        lineChart.getData().add(SeismeData.SerieDonneesLineChart);
 
         //Initialisation du camembert
         SeismeData seismeData = new SeismeData();
@@ -179,11 +185,6 @@ public class SeismeEvent{
     }
 
 
-
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-
-    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
     /*Lier les données récoltées à la LineChart :
     * lineChart.getData().add(prepdonneesCourbe(avec données en paramètre));
     * Il faut voir s'il faut tracer la LineChart dans cette classe ou bien
@@ -209,7 +210,11 @@ public class SeismeEvent{
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
         lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
-        //lineChart.getData().add(prepdonneesCourbe()); // ajoute les données à la LineChart
+        int minDate = Integer.parseInt(dateDebut.getText());
+        int maxDate = Integer.parseInt((dateFin.getText()));
+        int minIntensite = Integer.parseInt(String.valueOf(sliderMin.getValue()));
+        int maxIntensite = Integer.parseInt(String.valueOf(sliderMax.getValue()));
+        SeismeData.prepdonneesCourbe(SeismeData.Donnees, minDate, maxDate, minIntensite, maxIntensite); // ajoute les données à la LineChart
     }
 
     @FXML
