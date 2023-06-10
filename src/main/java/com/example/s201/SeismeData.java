@@ -23,39 +23,42 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 
-public class SeismeData implements Initializable {
+public  class  SeismeData {//implements Initializable {
 
     @FXML
     private Label moyenne;
 
-    private static List<List<String>> Donnees = new ArrayList<>();
+    private  List<List<String>> Donnees = new ArrayList<>();
     // Les données sur les seismes
 
     //Ces 4 attributs sont les filtres par defaut par rapport au fichier
-    private static LocalDate dateMin;
-    private static LocalDate dateMax;
-    private static Double intensiteMin;
-    private static Double intensiteMax;
+    private  LocalDate dateMin;
+    private  LocalDate dateMax;
+    private  Double intensiteMin;
+    private  Double intensiteMax;
 
-    private static ObservableList<XYChart.Data<String, Number>> DonneesBarchart = FXCollections.observableArrayList();
+
+    private  ObservableList<XYChart.Data<String, Number>> DonneesBarchart = FXCollections.observableArrayList();
     //Les données pour le barchart
 
-    private static ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
+    public  XYChart.Series<String, Number> SerieDonneesBarchart = new XYChart.Series<String, Number>();
+    //Contient toutes les données du barchart et permet l'évolution des données;
+
+    private  ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
             new PieChart.Data("Segment 1", 30),
             new PieChart.Data("Segment 2", 20),
             new PieChart.Data("Segment 3", 50)
     );
     // Les données pour le camembert
 
-    private static List<Pair<Number,LocalDate>> dateDonnees = new ArrayList<>();
+    private  List<Pair<Number,LocalDate>> dateDonnees = new ArrayList<>();
     //Les dates contenues dans les données avec leurs identifiants, mais mis tout au format "yyyy/MM/dd",
     // c'est à dire avec des valeurs par défaut
-    private static ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
-    // Les données pour la LineChart
-    public static XYChart.Series<String, Number> SerieDonneesBarchart = new XYChart.Series<>();
-    //Contient toutes les données du barchart et permet l'évolution des données;
 
-    public static void minMaxFiltre() throws ParseException {
+    private  ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
+    // Les données pour la LineChart
+
+    public void minMaxFiltre() throws ParseException {
         if (Donnees != null && !Donnees.isEmpty()) {
             List<String> dateString = new ArrayList<>();
             List<Double> intensiteTri = new ArrayList<>();
@@ -87,7 +90,7 @@ public class SeismeData implements Initializable {
         }
     }
 
-    private static LocalDate parseDate(String dateStr) {
+    private LocalDate parseDate(String dateStr) {
         try {
             if (dateStr.matches("\\d{4}/\\d{2}/\\d{2}")) {
                 return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -106,7 +109,7 @@ public class SeismeData implements Initializable {
 
     //Cette methode permet de lire le fichier CSV donné,puis de le
     // transformer en une liste manipulable
-    public static void lectureCSV(File fichier){
+    public void lectureCSV(File fichier){
         Pattern separateur = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
         boolean premiereLigne = true;
         try (BufferedReader csvLecture = new BufferedReader (new FileReader(fichier))) {
@@ -131,17 +134,20 @@ public class SeismeData implements Initializable {
         }*/
     }
 
-    public static void prepDonneesBarchart(List<List<String>> Donnees, LocalDate minDate, LocalDate maxDate,
-                                           Double minIntensité, Double maxIntensité) throws ParseException {
+    public void prepDonneesBarchart(List<List<String>> Donnees, LocalDate minDate, LocalDate maxDate,
+                                           Double minIntensite, Double maxIntensite) throws ParseException {
         if (DonneesBarchart.size() != 0)
             DonneesBarchart.removeAll();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         for (int i=0; i < Donnees.size(); i+=1){
             LocalDate tempDate = parseDate(Donnees.get(i).get(1));
-            Double tempIntensité = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size()-2));
-            if (tempIntensité >= minIntensité && tempIntensité <= maxIntensité
-                    && tempDate.isAfter(minDate) && tempDate.isBefore(maxDate)){
-                DonneesBarchart.add(new XYChart.Data<>(String.valueOf(tempDate), tempIntensité));
+            Double tempIntensite = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size()-2));
+            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
+                assert tempDate != null;
+                if (tempDate.isAfter(minDate) || tempDate.isEqual(minDate) && tempDate.isBefore(maxDate) || tempDate.isEqual(maxDate)) {
+                    String nomSurAxeX = String.valueOf(tempDate) + String.valueOf(i);
+                    DonneesBarchart.add(new XYChart.Data<>(nomSurAxeX, tempIntensite));
+                }
             }
         }
     }
@@ -178,10 +184,10 @@ public class SeismeData implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        SerieDonneesBarchart.setData(DonneesBarchart);
-    }
+   // @Override
+   // public void initialize(URL url, ResourceBundle resourceBundle) {
+   //     SerieDonneesBarchart.setData(DonneesBarchart);
+   // }
 
     //Récupère les données du graphique en camembert.
     public ObservableList<PieChart.Data> getDonneesCamembert() {
@@ -211,39 +217,43 @@ public class SeismeData implements Initializable {
 
     }
 
-    public static List<List<String>> getDonnees() {
+    public  List<List<String>> getDonnees() {
         return Donnees;
     }
 
-    public static LocalDate getDateMin() {
+    public  LocalDate getDateMin() {
         return dateMin;
     }
 
-    public static void setDateMin(LocalDate dateMin) {
-        SeismeData.dateMin = dateMin;
+    public  void setDateMin(LocalDate dateMin) {
+        this.dateMin = dateMin;
     }
 
-    public static LocalDate getDateMax() {
+    public  LocalDate getDateMax() {
         return dateMax;
     }
 
-    public static void setDateMax(LocalDate dateMax) {
-        SeismeData.dateMax = dateMax;
+    public  void setDateMax(LocalDate dateMax) {
+        this.dateMax = dateMax;
     }
 
-    public static Double getIntensiteMin() {
+    public  Double getIntensiteMin() {
         return intensiteMin;
     }
 
-    public static void setIntensiteMin(Double intensiteMin) {
-        SeismeData.intensiteMin = intensiteMin;
+    public  void setIntensiteMin(Double intensiteMin) {
+        this.intensiteMin = intensiteMin;
     }
 
-    public static Double getIntensiteMax() {
+    public  Double getIntensiteMax() {
         return intensiteMax;
     }
 
-    public static void setIntensiteMax(Double intensiteMax) {
-        SeismeData.intensiteMax = intensiteMax;
+    public void setIntensiteMax(Double intensiteMax) {
+        this.intensiteMax = intensiteMax;
+    }
+
+    public ObservableList<XYChart.Data<String, Number>> getDonneesBarchart() {
+        return DonneesBarchart;
     }
 }

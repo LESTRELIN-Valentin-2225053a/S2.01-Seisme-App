@@ -80,16 +80,12 @@
     <bottom>
         <!-- Diagramme en bandes-->
         <HBox fx:id="bas" alignment="CENTER">
-            <BarChart fx:id="diagrammeBandes" prefWidth="1100" prefHeight="200">
-                <xAxis> <!-- Axe des x avec les régions-->
-                    <CategoryAxis>
-
-                    </CategoryAxis>
+            <BarChart fx:id="diagrammeBandes" animated="false" prefWidth="1100" prefHeight="200">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM" />
                 </xAxis>
-                <yAxis> <!-- Ordonnée avec les chiffres-->
-                    <NumberAxis>
-
-                    </NumberAxis>
+                <yAxis>
+                    <NumberAxis label="Intensité" side="LEFT" />
                 </yAxis>
             </BarChart>
         </HBox>

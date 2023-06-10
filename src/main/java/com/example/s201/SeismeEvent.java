@@ -1,14 +1,13 @@
 package com.example.s201;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
-import javafx.scene.chart.PieChart;
 
 
 import java.io.File;
@@ -49,9 +48,12 @@ public class SeismeEvent {
     @FXML
     private HBox bas;
 
+    private SeismeData data;
+
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
     public void initialize() {
+        data = new SeismeData();
         //Initialisation du slider minimum
         sliderMin.setBlockIncrement(1);
         sliderMin.setShowTickLabels(true);
@@ -96,17 +98,18 @@ public class SeismeEvent {
         regionsList.add("LA RÉUNION");
         regionsList.add("MAYOTTE");
 
-        for (int i = 0; i < regionsList.size(); i++) {
-            regions.getItems().add(regionsList.get(i));
+        for (String s : regionsList) {
+            regions.getItems().add(s);
         }
 
         //Initialisation du Barchart
-        diagrammeBandes.getData().add(SeismeData.SerieDonneesBarchart);
+        data.SerieDonneesBarchart.setData(data.getDonneesBarchart());
+        diagrammeBandes.getData().add(data.SerieDonneesBarchart);
+
 
         //Initialisation du camembert
-        SeismeData seismeData = new SeismeData();
         //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
-        camembert.setData(seismeData.getDonneesCamembert());
+        camembert.setData(data.getDonneesCamembert());
 
     }
 
@@ -118,10 +121,11 @@ public class SeismeEvent {
         File fichierCSV = choixFichier.showOpenDialog(root.getScene().getWindow());
         if (fichierCSV != null) {
             //lance la configuration du CSV
-            SeismeData.lectureCSV(fichierCSV);
-            SeismeData.minMaxFiltre();
-            SeismeData.prepDonneesBarchart(SeismeData.getDonnees(), SeismeData.getDateMin(), SeismeData.getDateMax(),
-                    SeismeData.getIntensiteMin(), SeismeData.getIntensiteMax());
+            data.lectureCSV(fichierCSV);
+            data.minMaxFiltre();
+            data.prepDonneesBarchart(data.getDonnees(), data.getDateMin(), data.getDateMax(),
+                    data.getIntensiteMin(), data.getIntensiteMax());
+
         } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
         }
