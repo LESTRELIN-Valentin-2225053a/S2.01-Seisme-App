@@ -64,9 +64,9 @@
                         <!-- Ajouter les valeurs-->
                     </ChoiceBox>
                     <Label text="De " GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="dateDebut" onAction="#textFiel1dOnAction" promptText="ex : 2023/01/01" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <TextField fx:id="dateDebut" onAction="#textField1dOnAction" promptText="ex : 2023/01/01" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
                     <Label text="A " GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <TextField fx:id="dateFin" onAction="#textFiel2dOnAction" promptText="ex : 2023/12/31" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <TextField fx:id="dateFin" onAction="#textField2dOnAction" promptText="ex : 2023/12/31" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
                     <Label text="Intensité entre : " GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                 </GridPane>
                 <Slider fx:id="sliderMin" min="2" max="12" majorTickUnit="1" showTickLabels="true" showTickMarks="true"/>

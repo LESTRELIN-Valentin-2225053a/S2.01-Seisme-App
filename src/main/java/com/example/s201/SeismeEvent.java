@@ -146,14 +146,32 @@ public class SeismeEvent {
     //Les deux prochaines méthodes sont utilisées pour affichier une erreur
     //si la date saisi dans les textField ne correspondent pas au format souhaité
     @FXML
-    public void textFiel1dOnAction() {
+    public void textField1dOnAction() {
         String date = dateDebut.getText();
-        if (!isValidDate(date)) showAlert("Format de date invalide !");
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            actualiser.setDisable(true);
+            dateDebut.setText(null);
+        }
+        actualiser.setDisable(true);
+
     }
     @FXML
-    public void textFiel2dOnAction() {
+    public void textField2dOnAction() {
         String date = dateFin.getText();
-        if (!isValidDate(date)) showAlert("Format de date invalide !");
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            actualiser.setDisable(true);
+            dateFin.setText(null);
+        }
+        else actualiser.setDisable(false);
+
+        if (dateDebut.getText().compareTo(dateFin.getText()) > 0){
+            showAlert("La date de fin doit être supérieure à la date de début !");
+            actualiser.setDisable(true);
+            dateFin.setText(null);
+        }
+        else actualiser.setDisable(false);
     }
 
     @FXML
@@ -163,6 +181,7 @@ public class SeismeEvent {
         dateFin.setText(null);
         sliderMin.setValue(2);
         sliderMax.setValue(12);
+        actualiser.setDisable(false);
     }
 
 
