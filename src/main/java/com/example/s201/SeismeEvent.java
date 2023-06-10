@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeismeEvent extends SeismeData{
+public class SeismeEvent{
     @FXML
     private Label welcomeText;
     @FXML
