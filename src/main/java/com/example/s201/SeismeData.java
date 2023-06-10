@@ -55,8 +55,10 @@ public  class  SeismeData {
     //Les dates contenues dans les données avec leurs identifiants, mais mis tout au format "yyyy/MM/dd",
     // c'est à dire avec des valeurs par défaut
 
-    private  ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
+    private static ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
     // Les données pour la LineChart
+
+    public  XYChart.Series<Number, Number> SerieDonneesLineChart = new XYChart.Series<Number, Number>();
 
     public void minMaxFiltre() throws ParseException {
         if (Donnees != null && !Donnees.isEmpty()) {

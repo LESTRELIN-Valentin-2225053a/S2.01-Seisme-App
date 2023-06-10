@@ -12,6 +12,7 @@ import com.example.s201.SeismeData;
 
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class SeismeEvent{
         diagrammeBandes.getData().add(data.SerieDonneesBarchart);
 
 
-        lineChart.getData().add(SeismeData.SerieDonneesLineChart);
+        lineChart.getData().add(data.SerieDonneesLineChart);
 
         //Initialisation du camembert
         SeismeData seismeData = new SeismeData();
@@ -195,11 +196,6 @@ public class SeismeEvent{
     }
 
 
-
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-
-    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
     @FXML
     public void courbeOnAction(){
