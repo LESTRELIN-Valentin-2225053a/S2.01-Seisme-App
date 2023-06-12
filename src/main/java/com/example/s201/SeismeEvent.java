@@ -30,7 +30,7 @@ public class SeismeEvent{
     @FXML
     private Slider sliderMax;
     @FXML
-    private BarChart diagrammeBandes;
+    private ScatterChart diagrammePoint;
 
     NumberAxis xAxis = new NumberAxis();
     NumberAxis yAxis = new NumberAxis();
@@ -109,8 +109,8 @@ public class SeismeEvent{
         }
 
         //Initialisation du Barchart
-        data.SerieDonneesBarchart.setData(data.getDonneesBarchart());
-        diagrammeBandes.getData().add(data.SerieDonneesBarchart);
+        data.SerieDonneesScatterchart.setData(data.getDonneesScatterchart());
+        diagrammePoint.getData().add(data.SerieDonneesScatterchart);
 
 
         lineChart.getData().add(data.SerieDonneesLineChart);
@@ -132,7 +132,7 @@ public class SeismeEvent{
             //lance la configuration du CSV
             data.lectureCSV(fichierCSV);
             data.minMaxFiltre();
-            data.prepDonneesBarchart(data.getDonnees(), data.getDateMin(), data.getDateMax(),
+            data.prepDonneesScatterchart(data.getDonnees(), data.getDateMin(), data.getDateMax(),
                     data.getIntensiteMin(), data.getIntensiteMax());
 
         } else {
@@ -219,7 +219,7 @@ public class SeismeEvent{
         courbeButton.setDisable(false);
         diagrammeEnBandes.setDisable(true);
         bas.getChildren().clear();
-        bas.getChildren().add(diagrammeBandes);
+        bas.getChildren().add(diagrammePoint);
     }
     @FXML
     public void actualiserOnAction(){

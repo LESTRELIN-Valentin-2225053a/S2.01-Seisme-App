@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -38,10 +40,10 @@ public  class  SeismeData {
     private  Double intensiteMax;
 
 
-    private  ObservableList<XYChart.Data<String, Number>> DonneesBarchart = FXCollections.observableArrayList();
+    private  ObservableList<XYChart.Data<String, Number>> DonneesScatterchart = FXCollections.observableArrayList();
     //Les données pour le barchart
 
-    public  XYChart.Series<String, Number> SerieDonneesBarchart = new XYChart.Series<String, Number>();
+    public  XYChart.Series<String, Number> SerieDonneesScatterchart = new XYChart.Series<String, Number>();
     //Contient toutes les données du barchart et permet l'évolution des données;
 
     private  ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
@@ -66,16 +68,20 @@ public  class  SeismeData {
             List<Double> intensiteTri = new ArrayList<>();
 
             for (int i = 0; i < Donnees.size(); i++) {
-                String tempDateString = Donnees.get(i).get(1);
-                dateString.add(tempDateString);
-                intensiteTri.add(Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)));
+                if (Donnees.get(i).get(1) == "" || Donnees.get(i).get(Donnees.get(i).size() - 2) == "")
+                    continue;
+                else {
+                    String tempDateString = Donnees.get(i).get(1);
+                    dateString.add(tempDateString);
+                    intensiteTri.add(Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)));
+                }
             }
 
             Collections.sort(intensiteTri);
             intensiteMin = intensiteTri.get(0);
             intensiteMax = intensiteTri.get(intensiteTri.size() - 1);
 
-            for (int index = 0; index < Donnees.size(); index++) {
+            for (int index = 0; index < dateString.size(); index++) {
                 dateDonnees.add(new Pair<>(Integer.valueOf(Donnees.get(index).get(0)), parseDate(dateString.get(index))));
             }
 
@@ -136,21 +142,42 @@ public  class  SeismeData {
         }*/
     }
 
-    public void prepDonneesBarchart(List<List<String>> Donnees, LocalDate minDate, LocalDate maxDate,
+    public void prepDonneesScatterchart(List<List<String>> Donnees, LocalDate minDate, LocalDate maxDate,
                                            Double minIntensite, Double maxIntensite) throws ParseException {
-        if (DonneesBarchart.size() != 0)
-            DonneesBarchart.removeAll();
+        if (DonneesScatterchart.size() != 0)
+            DonneesScatterchart.removeAll();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        ArrayList<Pair<LocalDate, Double>> donneesTemp = new ArrayList<>();
         for (int i=0; i < Donnees.size(); i+=1){
-            LocalDate tempDate = parseDate(Donnees.get(i).get(1));
-            Double tempIntensite = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size()-2));
-            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
-                assert tempDate != null;
-                if (tempDate.isAfter(minDate) || tempDate.isEqual(minDate) && tempDate.isBefore(maxDate) || tempDate.isEqual(maxDate)) {
-                    String nomSurAxeX = String.valueOf(tempDate) + String.valueOf(i);
-                    DonneesBarchart.add(new XYChart.Data<>(nomSurAxeX, tempIntensite));
-                }
+            if (Donnees.get(i).get(1) == "" || Donnees.get(i).get(Donnees.get(i).size() - 2) == "") {
+                continue;
             }
+            else {
+                if (Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)) <= 12 && Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)) >= 0){
+                    LocalDate tempDate = parseDate(Donnees.get(i).get(1));
+                    Double tempIntensite = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size()-2));
+                    donneesTemp.add(new Pair<>(tempDate, tempIntensite));
+                }
+                else
+                   continue;
+            }
+        }
+        //Trie de la liste de données pour permttre un affichage trié dans le graphique
+        Collections.sort(donneesTemp, new Comparator<Pair<LocalDate, Double>>() {
+            @Override
+            public int compare(Pair<LocalDate, Double> pair1, Pair<LocalDate, Double> pair2) {
+                return pair1.getKey().compareTo(pair2.getKey());
+            }
+        });
+        for (Pair<LocalDate,Double> seisme : donneesTemp){
+            if (seisme.getValue() >= minIntensite && seisme.getValue() <= maxIntensite) {
+                assert seisme.getKey() != null;
+                if (seisme.getKey().isAfter(minDate) || seisme.getKey().isEqual(minDate)
+                        && seisme.getKey().isBefore(maxDate) || seisme.getKey().isEqual(maxDate)) {
+                    DonneesScatterchart.add(new XYChart.Data<>(String.valueOf(seisme.getKey()),seisme.getValue()));
+                }
+        }
+
         }
     }
 
@@ -266,7 +293,7 @@ public  class  SeismeData {
         this.intensiteMax = intensiteMax;
     }
 
-    public ObservableList<XYChart.Data<String, Number>> getDonneesBarchart() {
-        return DonneesBarchart;
+    public ObservableList<XYChart.Data<String, Number>> getDonneesScatterchart() {
+        return DonneesScatterchart;
     }
 }

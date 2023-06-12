@@ -18,6 +18,7 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.ScatterChart?>
 <BorderPane fx:id="root" prefWidth="1140" prefHeight="724" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
         <HBox fx:id="header" spacing="300" prefHeight="30">
@@ -80,14 +81,14 @@
     <bottom>
         <!-- Diagramme en bandes-->
         <HBox fx:id="bas" alignment="CENTER">
-            <BarChart fx:id="diagrammeBandes" animated="false" prefWidth="1100" prefHeight="200">
+            <ScatterChart fx:id="diagrammePoint" animated="false" prefWidth="1100" prefHeight="200">
                 <xAxis>
                     <CategoryAxis side="BOTTOM" />
                 </xAxis>
                 <yAxis>
                     <NumberAxis label="Intensité" side="LEFT" />
                 </yAxis>
-            </BarChart>
+            </ScatterChart>
         </HBox>
     </bottom>
 </BorderPane>
