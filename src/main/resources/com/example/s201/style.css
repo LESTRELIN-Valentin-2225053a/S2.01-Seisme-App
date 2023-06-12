@@ -46,7 +46,7 @@ BorderPane{
     -fx-font-size: 25px;
 }
 
-#diagrammeBandes {
+#diagrammePoint {
     -fx-background-color: white;
     -fx-background-radius: 15;
 }

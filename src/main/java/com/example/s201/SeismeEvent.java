@@ -112,7 +112,6 @@ public class SeismeEvent{
         data.SerieDonneesScatterchart.setData(data.getDonneesScatterchart());
         diagrammePoint.getData().add(data.SerieDonneesScatterchart);
 
-
         lineChart.getData().add(data.SerieDonneesLineChart);
 
         //Initialisation du camembert
@@ -213,6 +212,8 @@ public class SeismeEvent{
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
         lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
+        //data.prepdonneesCourbe(data.getDonnees(), data.getDateMin(), data.getDateMax(),
+        //        data.getIntensiteMin(), data.getIntensiteMax());
     }
     @FXML
     public void diagrammeOnAction(){

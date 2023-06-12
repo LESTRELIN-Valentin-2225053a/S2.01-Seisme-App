@@ -19,9 +19,9 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.ScatterChart?>
-<BorderPane fx:id="root" prefWidth="1140" prefHeight="724" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
+<BorderPane fx:id="root" prefWidth="1140" prefHeight="724" maxWidth="1140" maxHeight="724" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.s201.SeismeEvent" stylesheets="@style.css">
     <top>
-        <HBox fx:id="header" spacing="300" prefHeight="30">
+        <HBox fx:id="header" spacing="300" prefHeight="30" maxHeight="30">
             <HBox spacing="20" alignment="CENTER_LEFT">
             <Button fx:id="courbeButton" text="Courbe" onAction="#courbeOnAction"/>
             <Button fx:id="diagrammeEnBandes" text="Diagamme en Bandes" onAction="#diagrammeOnAction"/>
@@ -35,21 +35,21 @@
     </top>
 
     <center>
-        <HBox fx:id="centre" spacing="15" prefHeight="450">
+        <HBox fx:id="centre" spacing="15" prefHeight="450" maxHeight="850">
 
             <!-- première partie contenant la carte de la France-->
 
-            <AnchorPane fx:id="carte" prefWidth="450" prefHeight="450">
+            <AnchorPane fx:id="carte" prefWidth="450" prefHeight="450" maxWidth="850" maxHeight="850">
             </AnchorPane>
             <VBox spacing="10">
 
             <!-- deuxième partie contenant le camembert et l'affichage de la moyenne-->
 
-                <PieChart fx:id="camembert" prefWidth="250" prefHeight="250">
+                <PieChart fx:id="camembert" prefWidth="250" prefHeight="250" maxWidth="650" maxHeight="650">
                 </PieChart>
 
 
-                <VBox fx:id="vBoxMoyenne" spacing="10" prefWidth="250" prefHeight="250" alignment="CENTER">
+                <VBox fx:id="vBoxMoyenne" spacing="10" prefWidth="250" prefHeight="250" maxWidth="650" maxHeight="650" alignment="CENTER">
                     <Label fx:id="moyenne" text="--"/>
                     <Label text="Intensité moyenne"/>
                 </VBox>
@@ -57,7 +57,7 @@
 
             <!-- troisième partie contenant le filtre dans une Vbox-->
 
-            <VBox fx:id="filtrer" spacing="30" prefWidth="416" prefHeight="450">
+            <VBox fx:id="filtrer" spacing="30" prefWidth="416" prefHeight="450" maxWidth="816" maxHeight="750">
                 <Label fx:id="filtrerLabel" text="Filtrer"/>
                 <GridPane vgap="20">
                     <Label text="Région" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -81,7 +81,7 @@
     <bottom>
         <!-- Diagramme en bandes-->
         <HBox fx:id="bas" alignment="CENTER">
-            <ScatterChart fx:id="diagrammePoint" animated="false" prefWidth="1100" prefHeight="200">
+            <ScatterChart fx:id="diagrammePoint" animated="false" prefWidth="1100" prefHeight="200" maxWidth="1500" maxHeight="600">
                 <xAxis>
                     <CategoryAxis side="BOTTOM" />
                 </xAxis>
