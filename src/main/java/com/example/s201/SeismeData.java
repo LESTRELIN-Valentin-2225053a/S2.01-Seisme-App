@@ -44,7 +44,7 @@ public  class  SeismeData {
 
     public static XYChart.Series<Number, Number> SerieDonneesLineChart = new XYChart.Series<Number, Number>();
 
-    public static ObservableList<MapPoint> pointMapDonnees = FXCollections.observableArrayList();
+    public static ObservableList<Pair<MapPoint,Double>> pointMapDonnees = FXCollections.observableArrayList();
 
 
     public static void prepDonneesScatterchart(LocalDate minDate, LocalDate maxDate,
@@ -160,8 +160,21 @@ public  class  SeismeData {
         }
     }
 
-    public static void prepDonneesMap(int minDate, int maxDate, int minIntensite, int maxIntensite){
 
+    //Prépare les données pour les points de la carte
+    public static void prepDonneesMap(LocalDate minDate, LocalDate maxDate, Double minIntensite, Double maxIntensite){
+        if(pointMapDonnees.size()!= 0)
+            pointMapDonnees.removeAll();
+        for (int i=0; i < GestionDonneesCSV.getDonnees().size(); i+=1){
+            if ((GestionDonneesCSV.getIntensiteDonnees().get(i) >= minIntensite && GestionDonneesCSV.getIntensiteDonnees().get(i) <= maxIntensite)
+                    && (GestionDonneesCSV.getDateDonnees().get(i).isAfter(minDate) && GestionDonneesCSV.getDateDonnees().get(i).isBefore(maxDate))){
+                if (GestionDonneesCSV.getPosGPSDonnees().get(i).getKey() != null || GestionDonneesCSV.getPosGPSDonnees().get(i).getValue() != null){
+                    MapPoint pointTemp = new MapPoint(GestionDonneesCSV.getPosGPSDonnees().get(i).getKey(),
+                            GestionDonneesCSV.getPosGPSDonnees().get(i).getValue());
+                    pointMapDonnees.add(new Pair<>(pointTemp, GestionDonneesCSV.getIntensiteDonnees().get(i)));
+                }
+            }
+        }
     }
 
     public static ObservableList<XYChart.Data<String, Number>> getDonneesScatterchart() {
@@ -170,5 +183,9 @@ public  class  SeismeData {
 
     public static ObservableList<XYChart.Data<Number, Number>> getDonneesLineChart() {
         return DonneesLineChart;
+    }
+
+    public static ObservableList<Pair<MapPoint,Double>> getPointMapDonnees() {
+        return pointMapDonnees;
     }
 }

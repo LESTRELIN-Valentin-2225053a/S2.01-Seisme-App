@@ -60,12 +60,13 @@ public class SeismeEvent{
 
     @FXML
     private HBox bas;
-
+    private CustomMapLayer mapLayout;
     private SeismeData data;
 
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
     public void initialize() {
+        data = new SeismeData();
         //Initialisation du slider minimum
         sliderMin.setBlockIncrement(1);
         sliderMin.setShowTickLabels(true);
@@ -115,13 +116,7 @@ public class SeismeEvent{
         }
 
         //Initialisation de la map
-        System.setProperty("javafx.platform", "desktop");
-        System.setProperty("http.agent", "Gluon Mobile/1.0.3");
-        MapPoint centrerFrance = new MapPoint(46.227638, 2.213749);
-        CustomMapLayer mapLayout = new CustomMapLayer();
-        Map.addLayer(mapLayout);
-        Map.setCenter(centrerFrance);
-        Map.setZoom(5);
+        InitMap();
 
         //Initialisation du Barchart
         SeismeData.SerieDonneesScatterchart.setData(SeismeData.getDonneesScatterchart());
@@ -154,6 +149,9 @@ public class SeismeEvent{
             Double anneemax = Double.valueOf(StringDatemax[0]);
             SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), anneemin, anneemax,
                     GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
+            SetPointOnMap(GestionDonneesCSV.getDateMin(), GestionDonneesCSV.getDateMax(),
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
+
         } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
         }
@@ -261,6 +259,27 @@ public class SeismeEvent{
         SeismeData.getDonneesScatterchart().clear();
         SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
 
+        SeismeData.getPointMapDonnees().clear();
+        SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+
         bas.getChildren().add(diagrammePoint);
+    }
+
+    public void InitMap(){
+        System.setProperty("javafx.platform", "desktop");
+        System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+        MapPoint centrerFrance = new MapPoint(46.227638, 2.213749);
+        mapLayout = new CustomMapLayer();
+        Map.addLayer(mapLayout);
+        //mapLayout.ajouterPoint(centrerFrance, 5.0);
+        Map.setCenter(centrerFrance);
+        Map.setZoom(5);
+    }
+
+    public void SetPointOnMap(LocalDate minDate, LocalDate maxDate, Double minIntensite, Double maxIntensite){
+        data.prepDonneesMap(minDate, maxDate, minIntensite, maxIntensite);
+        for (int i=0; i < data.getPointMapDonnees().size(); i+=1){
+            mapLayout.ajouterPoint(data.getPointMapDonnees().get(i).getKey(), data.getPointMapDonnees().get(i).getValue());
+        }
     }
 }

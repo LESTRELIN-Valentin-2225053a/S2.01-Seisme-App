@@ -41,7 +41,9 @@
             <!-- première partie contenant la carte de la France-->
 
             <AnchorPane fx:id="carte" prefWidth="450" prefHeight="450">
-                <MapView fx:id="Map" prefWidth="450" prefHeight="450" AnchorPane.topAnchor="15"></MapView>
+                <MapView fx:id="Map" prefWidth="450" prefHeight="450" AnchorPane.topAnchor="15">
+
+                </MapView>
             </AnchorPane>
             <VBox spacing="10">
 
