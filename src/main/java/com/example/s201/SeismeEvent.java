@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -60,11 +61,13 @@ public class SeismeEvent{
 
     @FXML
     private HBox bas;
+    @FXML
+    private AnchorPane carte;
     private CustomMapLayer mapLayout;
     private SeismeData data;
 
 
-    //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
+
     public void initialize() {
         data = new SeismeData();
         //Initialisation du slider minimum
@@ -130,6 +133,8 @@ public class SeismeEvent{
         //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
         camembert.setData(SeismeData.getDonneesCamembert());
 
+        //Initialisation du bouton actualiser
+        actualiser.setDisable(true);
     }
 
     //Cette fonction est utilisé par le bouton "Inserer" et sert à
@@ -167,7 +172,6 @@ public class SeismeEvent{
     //Cette méthode est utilisé pour afficher une alerte avec un message entré en paramètre
     public void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Vérification de format");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -177,30 +181,11 @@ public class SeismeEvent{
     //si la date saisi dans les textField ne correspondent pas au format souhaité
     @FXML
     public void textField1dOnAction() {
-        String date = dateDebut.getText();
-        if (!isValidDate(date)){
-            showAlert("Format de date invalide !");
-            actualiser.setDisable(true);
-            dateDebut.setText(null);
-        }
-        actualiser.setDisable(true);
+        actualiserIsOk();
     }
     @FXML
     public void textField2dOnAction() {
-        String date = dateFin.getText();
-        if (!isValidDate(date)){
-            showAlert("Format de date invalide !");
-            actualiser.setDisable(true);
-            dateFin.setText(null);
-        }
-        else actualiser.setDisable(false);
-
-        if (dateDebut.getText().compareTo(dateFin.getText()) > 0){
-            showAlert("La date de fin doit être supérieure à la date de début !");
-            actualiser.setDisable(true);
-            dateFin.setText(null);
-        }
-        else actualiser.setDisable(false);
+        actualiserIsOk();
     }
 
     @FXML
@@ -210,6 +195,7 @@ public class SeismeEvent{
         dateFin.setText(null);
         sliderMin.setValue(2);
         sliderMax.setValue(12);
+        actualiser.setDisable(true);
     }
 
 
@@ -242,9 +228,6 @@ public class SeismeEvent{
     }
     @FXML
     public void actualiserOnAction() throws ParseException {
-        /*
-        Afficher les données sur la BarChart
-         */
         diagrammeaPoint.setDisable(true);
         courbeButton.setDisable(false);
         String[] anneeDebut = dateDebut.getText().split("/+");
@@ -252,17 +235,17 @@ public class SeismeEvent{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         bas.getChildren().clear();
+            SeismeData.getDonneesLineChart().clear();
+            SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), Double.parseDouble(anneeDebut[0]), Double.parseDouble(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue());
 
-        SeismeData.getDonneesLineChart().clear();
-        SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), Double.parseDouble(anneeDebut[0]), Double.parseDouble(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue());
-
-        SeismeData.getDonneesScatterchart().clear();
-        SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
-
-        SeismeData.getPointMapDonnees().clear();
-        SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
-
+            SeismeData.getDonneesScatterchart().clear();
+            SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
         bas.getChildren().add(diagrammePoint);
+
+        carte.getChildren().clear();
+            SeismeData.getPointMapDonnees().clear();
+            SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+        carte.getChildren().add(Map);
     }
 
     public void InitMap(){
@@ -282,4 +265,39 @@ public class SeismeEvent{
             mapLayout.ajouterPoint(data.getPointMapDonnees().get(i).getKey(), data.getPointMapDonnees().get(i).getValue());
         }
     }
+
+    public  void actualiserIsOk(){
+        String debutDate = dateDebut.getText();
+        String finDate = dateFin.getText();
+
+        if (!isValidDate(debutDate)){
+            showAlert("Format de date invalide !");
+            dateDebut.setText(null);
+        }
+        if (!isValidDate(finDate)){
+            showAlert("Format de date invalide !");
+            dateFin.setText(null);
+        }
+        if (debutDate.compareTo(finDate) > 0){
+            showAlert("La date de fin doit être supérieure à la date de début !");
+            dateFin.setText(null);
+        }
+
+        if(regions.getValue() != null && dateDebut.getText() != null && dateFin.getText() != null) {
+            actualiser.setDisable(false);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
