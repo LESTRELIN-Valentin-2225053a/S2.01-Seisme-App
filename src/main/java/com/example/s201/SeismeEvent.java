@@ -158,7 +158,7 @@ public class SeismeEvent{
                     GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
 
         } else {
-            //Faudra mettre un label qui dit "faut choisir un fichier"
+            showAlert("Veuillez choisir un fichier !");
         }
     }
 
