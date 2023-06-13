@@ -215,7 +215,9 @@ public class SeismeEvent{
         bas.getChildren().add(lineChart);
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
+        lineChart.setTitle("Intensité en fonction des années");
         lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
+        lineChart.setLegendVisible(true);
         //data.prepdonneesCourbe(data.getDonnees(), data.getDateMin(), data.getDateMax(),
         //        data.getIntensiteMin(), data.getIntensiteMax());
     }
