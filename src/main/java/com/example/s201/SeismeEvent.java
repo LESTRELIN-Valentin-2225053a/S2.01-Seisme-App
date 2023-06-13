@@ -123,6 +123,7 @@ public class SeismeEvent{
         //Initialisation du Barchart
         SeismeData.SerieDonneesScatterchart.setData(SeismeData.getDonneesScatterchart());
         diagrammePoint.getData().add(SeismeData.SerieDonneesScatterchart);
+
         SeismeData.SerieDonneesLineChart.setData(SeismeData.getDonneesLineChart());
         lineChart.getData().add(SeismeData.SerieDonneesLineChart);
 
@@ -143,6 +144,12 @@ public class SeismeEvent{
             //lance la configuration du CSV
             GestionDonneesCSV.lectureCSV(fichierCSV);
             SeismeData.prepDonneesScatterchart(GestionDonneesCSV.getDateMin(), GestionDonneesCSV.getDateMax(),
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
+            String[] StringDatemin = String.valueOf(GestionDonneesCSV.getDateMin()).split("-+");
+            String[] StringDatemax = String.valueOf(GestionDonneesCSV.getDateMax()).split("-+");
+            Double anneemin = Double.valueOf(StringDatemin[0]);
+            Double anneemax = Double.valueOf(StringDatemax[0]);
+            SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), anneemin, anneemax,
                     GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
 
         } else {

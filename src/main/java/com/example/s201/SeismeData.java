@@ -145,14 +145,14 @@ public  class  SeismeData {
     }
 
 
-    public static void prepdonneesCourbe(List<List<String>> Donnees, int minDate, int maxDate,
-                                         int minIntensite, int maxIntensite){
+    public static void prepdonneesCourbe(List<List<String>> Donnees, Double minDate, Double maxDate,
+                                         Double minIntensite, Double maxIntensite){
         if (DonneesLineChart.size() != 0)
             DonneesLineChart.removeAll();
         for (int i=0; i < Donnees.size(); i+=1) {
             String[] tempDate = Donnees.get(i).get(1).split("/+");
-            int tempAnnee = Integer.valueOf(tempDate[0]);
-            int tempIntensité = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
+            Double tempAnnee = Double.valueOf(tempDate[0]);
+            Double tempIntensité = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2));
             if (tempIntensité >= minIntensite && tempIntensité <= maxIntensite
                     && tempAnnee >= minDate && tempAnnee <= maxDate) {
                 DonneesLineChart.add(new XYChart.Data<>(tempAnnee, tempIntensité));
