@@ -238,6 +238,10 @@ public class SeismeEvent{
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
         lineChart.setTitle("Intensité en fonction des années");
+        yAxis.setLabel("Intensité");
+        xAxis.setLabel("Années");
+        xAxis.setLowerBound(1100);
+        xAxis.setUpperBound(2100);
         lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
         lineChart.setLegendVisible(true);
         //data.prepdonneesCourbe(data.getDonnees(), data.getDateMin(), data.getDateMax(),
