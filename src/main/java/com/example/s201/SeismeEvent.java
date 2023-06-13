@@ -238,10 +238,17 @@ public class SeismeEvent{
         lineChart.setTitle("Nombres de seismes par années");
         yAxis.setLabel("Nombres");
         xAxis.setLabel("Années");
-        xAxis.setLowerBound(1100);
-        xAxis.setUpperBound(2100);
+        yAxis.setLabel("Intensité");
+        xAxis.setLabel("Années");
         lineChart.setStyle("-fx-background-color: white; -fx-background-radius: 15");
         lineChart.setLegendVisible(true);
+        String[] anneeDebut = dateDebut.getText().split("/+");
+        String[] anneeFin = dateFin.getText().split("/+");
+        if (dateDebut.getText() != null && dateFin.getText() != null){
+            xAxis.setAutoRanging(false);
+            xAxis.setLowerBound(Double.parseDouble(anneeDebut[0]));
+            xAxis.setUpperBound(Double.parseDouble(anneeFin[0]));
+        }
         //data.prepdonneesCourbe(data.getDonnees(), data.getDateMin(), data.getDateMax(),
         //        data.getIntensiteMin(), data.getIntensiteMax());
     }
@@ -262,16 +269,15 @@ public class SeismeEvent{
 
         bas.getChildren().clear();
             SeismeData.getDonneesLineChart().clear();
-            SeismeData.prepdonneesCourbe(Integer.parseInt(anneeDebut[0]), Integer.parseInt(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue(), "");
+            SeismeData.prepdonneesCourbe(Integer.valueOf(anneeDebut[0]), Integer.valueOf(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue(), "");
 
             SeismeData.getDonneesScatterchart().clear();
-            SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), "");
+            SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), regions.getValue().toString());
         bas.getChildren().add(diagrammePoint);
 
         carte.getChildren().clear();
             SeismeData.getPointMapDonnees().clear();
-            //SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
-            SetPointOnMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), "");
+            SetPointOnMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), regions.getValue().toString());
             carte.getChildren().add(Map);
     }
 
