@@ -1,5 +1,7 @@
 package com.example.s201;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,6 +33,8 @@ public class SeismeEvent{
     private Slider sliderMax;
     @FXML
     private ScatterChart diagrammePoint;
+    @FXML
+    private MapView Map;
 
     NumberAxis xAxis = new NumberAxis();
     NumberAxis yAxis = new NumberAxis();
@@ -45,7 +49,7 @@ public class SeismeEvent{
     private TextField dateFin;
 
     @FXML
-    private Button diagrammeEnBandes;
+    private Button diagrammeaPoint;
     @FXML
     private  Button actualiser;
     @FXML
@@ -59,7 +63,6 @@ public class SeismeEvent{
 
     //Cette fonction permet d'initialiser les deux sliders contenu dans le filtre
     public void initialize() {
-        data = new SeismeData();
         //Initialisation du slider minimum
         sliderMin.setBlockIncrement(1);
         sliderMin.setShowTickLabels(true);
@@ -108,16 +111,25 @@ public class SeismeEvent{
             regions.getItems().add(s);
         }
 
-        //Initialisation du Barchart
-        data.SerieDonneesScatterchart.setData(data.getDonneesScatterchart());
-        diagrammePoint.getData().add(data.SerieDonneesScatterchart);
+        //Initialisation de la map
+        System.setProperty("javafx.platform", "desktop");
+        System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+        MapPoint centrerFrance = new MapPoint(46.227638, 2.213749);
+        CustomMapLayer mapLayout = new CustomMapLayer();
+        Map.addLayer(mapLayout);
+        Map.setCenter(centrerFrance);
+        Map.setZoom(5);
 
-        lineChart.getData().add(data.SerieDonneesLineChart);
+        //Initialisation du Barchart
+        SeismeData.SerieDonneesScatterchart.setData(SeismeData.getDonneesScatterchart());
+        diagrammePoint.getData().add(SeismeData.SerieDonneesScatterchart);
+
+        lineChart.getData().add(SeismeData.SerieDonneesLineChart);
 
         //Initialisation du camembert
         SeismeData seismeData = new SeismeData();
         //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
-        camembert.setData(data.getDonneesCamembert());
+        camembert.setData(SeismeData.getDonneesCamembert());
 
     }
 
@@ -129,10 +141,9 @@ public class SeismeEvent{
         File fichierCSV = choixFichier.showOpenDialog(root.getScene().getWindow());
         if (fichierCSV != null) {
             //lance la configuration du CSV
-            data.lectureCSV(fichierCSV);
-            data.minMaxFiltre();
-            data.prepDonneesScatterchart(data.getDonnees(), data.getDateMin(), data.getDateMax(),
-                    data.getIntensiteMin(), data.getIntensiteMax());
+            GestionDonneesCSV.lectureCSV(fichierCSV);
+            SeismeData.prepDonneesScatterchart(GestionDonneesCSV.getDateMin(), GestionDonneesCSV.getDateMax(),
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
 
         } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
@@ -206,7 +217,7 @@ public class SeismeEvent{
          - et on l'affiche dans la HBox : bas.getChildren().add(Nom de la LineChart);
         */
         courbeButton.setDisable(true);
-        diagrammeEnBandes.setDisable(false);
+        diagrammeaPoint.setDisable(false);
         bas.getChildren().clear();
         bas.getChildren().add(lineChart);
         lineChart.setPrefWidth(1100);
@@ -218,7 +229,7 @@ public class SeismeEvent{
     @FXML
     public void diagrammeOnAction(){
         courbeButton.setDisable(false);
-        diagrammeEnBandes.setDisable(true);
+        diagrammeaPoint.setDisable(true);
         bas.getChildren().clear();
         bas.getChildren().add(diagrammePoint);
     }
@@ -227,7 +238,7 @@ public class SeismeEvent{
         /*
         Afficher les données sur la BarChart
          */
-        diagrammeEnBandes.setDisable(true);
+        diagrammeaPoint.setDisable(true);
         courbeButton.setDisable(false);
     }
 

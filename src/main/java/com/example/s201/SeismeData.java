@@ -1,5 +1,6 @@
 package com.example.s201;
 
+import com.gluonhq.maps.MapPoint;
 import javafx.collections.FXCollections;
 
 import java.io.*;
@@ -25,132 +26,40 @@ public  class  SeismeData {
     @FXML
     private Label moyenne;
 
-    private  List<List<String>> Donnees = new ArrayList<>();
-    // Les données sur les seismes
-
-    //Ces 4 attributs sont les filtres par defaut par rapport au fichier
-    private  LocalDate dateMin;
-    private  LocalDate dateMax;
-    private  Double intensiteMin;
-    private  Double intensiteMax;
-
-
-    private  ObservableList<XYChart.Data<String, Number>> DonneesScatterchart = FXCollections.observableArrayList();
+    private static ObservableList<XYChart.Data<String, Number>> DonneesScatterchart = FXCollections.observableArrayList();
     //Les données pour le barchart
 
-    public  XYChart.Series<String, Number> SerieDonneesScatterchart = new XYChart.Series<String, Number>();
+    public static XYChart.Series<String, Number> SerieDonneesScatterchart = new XYChart.Series<String, Number>();
     //Contient toutes les données du barchart et permet l'évolution des données;
 
-    private  ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
+    private static ObservableList<PieChart.Data> DonneesCamembert = FXCollections.observableArrayList(
             new PieChart.Data("Segment 1", 30),
             new PieChart.Data("Segment 2", 20),
             new PieChart.Data("Segment 3", 50)
     );
     // Les données pour le camembert
 
-    private  List<Pair<Number,LocalDate>> dateDonnees = new ArrayList<>();
-    //Les dates contenues dans les données avec leurs identifiants, mais mis tout au format "yyyy/MM/dd",
-    // c'est à dire avec des valeurs par défaut
-
     private static ObservableList<XYChart.Data<Number, Number>> DonneesLineChart = FXCollections.observableArrayList();
     // Les données pour la LineChart
 
-    public  XYChart.Series<Number, Number> SerieDonneesLineChart = new XYChart.Series<Number, Number>();
+    public static XYChart.Series<Number, Number> SerieDonneesLineChart = new XYChart.Series<Number, Number>();
 
-    public void minMaxFiltre() throws ParseException {
-        if (Donnees != null && !Donnees.isEmpty()) {
-            List<String> dateString = new ArrayList<>();
-            List<Double> intensiteTri = new ArrayList<>();
-
-            for (int i = 0; i < Donnees.size(); i++) {
-                if (Donnees.get(i).get(1) == "" || Donnees.get(i).get(Donnees.get(i).size() - 2) == "")
-                    continue;
-                else {
-                    String tempDateString = Donnees.get(i).get(1);
-                    dateString.add(tempDateString);
-                    intensiteTri.add(Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)));
-                }
-            }
-
-            Collections.sort(intensiteTri);
-            intensiteMin = intensiteTri.get(0);
-            intensiteMax = intensiteTri.get(intensiteTri.size() - 1);
-
-            for (int index = 0; index < dateString.size(); index++) {
-                dateDonnees.add(new Pair<>(Integer.valueOf(Donnees.get(index).get(0)), parseDate(dateString.get(index))));
-            }
-
-            // Trie par rapport aux Dates
-            Collections.sort(dateDonnees, new Comparator<Pair<Number, LocalDate>>() {
-                @Override
-                public int compare(Pair<Number, LocalDate> pair1, Pair<Number, LocalDate> pair2) {
-                    return pair1.getValue().compareTo(pair2.getValue());
-                }
-            });
-
-            dateMin = dateDonnees.get(0).getValue();
-            dateMax = dateDonnees.get(dateDonnees.size() - 1).getValue();
-        }
-    }
-
-    private LocalDate parseDate(String dateStr) {
-        try {
-            if (dateStr.matches("\\d{4}/\\d{2}/\\d{2}")) {
-                return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            } else if (dateStr.matches("\\d{4}/\\d{2}")) {
-                return LocalDate.parse(dateStr + "/01", DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            } else if (dateStr.matches("\\d{4}/")) {
-                return LocalDate.parse(dateStr + "01/01", DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            }
-        } catch (Exception e) {
-            // Gérer les erreurs de parsing ici
-            System.out.println("Erreur de parsing pour la date : " + dateStr);
-        }
-        return null;
-    }
+    public static ObservableList<MapPoint> pointMapDonnees = FXCollections.observableArrayList();
 
 
-    //Cette methode permet de lire le fichier CSV donné,puis de le
-    // transformer en une liste manipulable
-    public void lectureCSV(File fichier){
-        Pattern separateur = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-        boolean premiereLigne = true;
-        try (BufferedReader csvLecture = new BufferedReader (new FileReader(fichier))) {
-            String ligne;
-            while ((ligne = csvLecture.readLine()) != null){
-                if (premiereLigne) {
-                    premiereLigne = false;
-                    continue; // Ignorer la première ligne
-                }
-                String[] Seisme = separateur.split(ligne);
-                Donnees.add(Arrays.asList(Seisme));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //Test pour vérifier que tout marche (à enlever plus tard)
- /*       for (int i = 0; i < Données.size(); i+=1){
-            for (int y = 0; y < Données.get(i).size(); y+=1){
-                System.out.println(Données.get(i).get(y));
-            }
-            System.out.println("Suivant");
-        }*/
-    }
-
-    public void prepDonneesScatterchart(List<List<String>> Donnees, LocalDate minDate, LocalDate maxDate,
-                                           Double minIntensite, Double maxIntensite) throws ParseException {
+    public static void prepDonneesScatterchart(LocalDate minDate, LocalDate maxDate,
+                                               Double minIntensite, Double maxIntensite) throws ParseException {
         if (DonneesScatterchart.size() != 0)
             DonneesScatterchart.removeAll();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         ArrayList<Pair<LocalDate, Double>> donneesTemp = new ArrayList<>();
-        for (int i=0; i < Donnees.size(); i+=1){
-            if (Donnees.get(i).get(1) == "" || Donnees.get(i).get(Donnees.get(i).size() - 2) == "") {
+        for (int i=0; i < GestionDonneesCSV.getDonnees().size(); i+=1){
+            if (GestionDonneesCSV.getDateDonnees().get(i) == null || GestionDonneesCSV.getIntensiteDonnees().get(i) == null) {
                 continue;
             }
             else {
-                if (Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)) <= 12 && Double.valueOf(Donnees.get(i).get(Donnees.get(i).size() - 2)) >= 0){
-                    LocalDate tempDate = parseDate(Donnees.get(i).get(1));
-                    Double tempIntensite = Double.valueOf(Donnees.get(i).get(Donnees.get(i).size()-2));
+                if (GestionDonneesCSV.getIntensiteDonnees().get(i) <= 12 && GestionDonneesCSV.getIntensiteDonnees().get(i) >= 0){
+                    LocalDate tempDate = GestionDonneesCSV.getDateDonnees().get(i);
+                    Double tempIntensite = GestionDonneesCSV.getIntensiteDonnees().get(i);
                     donneesTemp.add(new Pair<>(tempDate, tempIntensite));
                 }
                 else
@@ -171,8 +80,7 @@ public  class  SeismeData {
                         && seisme.getKey().isBefore(maxDate) || seisme.getKey().isEqual(maxDate)) {
                     DonneesScatterchart.add(new XYChart.Data<>(String.valueOf(seisme.getKey()),seisme.getValue()));
                 }
-        }
-
+            }
         }
     }
 
@@ -214,7 +122,7 @@ public  class  SeismeData {
    // }
 
     //Récupère les données du graphique en camembert.
-    public ObservableList<PieChart.Data> getDonneesCamembert() {
+    public static ObservableList<PieChart.Data> getDonneesCamembert() {
         return DonneesCamembert;
     }
     private double calculateMoyenneIntensite(List<List<String>> Donnees, int minIntensite, int maxIntensite) {
@@ -252,43 +160,11 @@ public  class  SeismeData {
         }
     }
 
-    public  List<List<String>> getDonnees() {
-        return Donnees;
+    public static void prepDonneesMap(int minDate, int maxDate, int minIntensite, int maxIntensite){
+
     }
 
-    public  LocalDate getDateMin() {
-        return dateMin;
-    }
-
-    public  void setDateMin(LocalDate dateMin) {
-        this.dateMin = dateMin;
-    }
-
-    public  LocalDate getDateMax() {
-        return dateMax;
-    }
-
-    public  void setDateMax(LocalDate dateMax) {
-        this.dateMax = dateMax;
-    }
-
-    public  Double getIntensiteMin() {
-        return intensiteMin;
-    }
-
-    public  void setIntensiteMin(Double intensiteMin) {
-        this.intensiteMin = intensiteMin;
-    }
-
-    public  Double getIntensiteMax() {
-        return intensiteMax;
-    }
-
-    public void setIntensiteMax(Double intensiteMax) {
-        this.intensiteMax = intensiteMax;
-    }
-
-    public ObservableList<XYChart.Data<String, Number>> getDonneesScatterchart() {
+    public static ObservableList<XYChart.Data<String, Number>> getDonneesScatterchart() {
         return DonneesScatterchart;
     }
 }
