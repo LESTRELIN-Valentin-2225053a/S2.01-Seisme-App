@@ -109,55 +109,32 @@ public  class  SeismeData {
     //Sert à la visualisation des données pour le graphique en camembert.
     public void prepDonneesCamembert(List<List<String>> Donnees, int minIntensite, int maxIntensite) {
         if (DonneesCamembert.size() != 0)
-            DonneesCamembert.removeAll();
-        int count = 0;
-        int totalIntensite = 0; // Ajout de cette variable pour calculer la somme des intensités
+            DonneesCamembert.clear();
 
-        for (int i = 0; i < Donnees.size(); i += 1) {
-            int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
-            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
-                count++;
-                totalIntensite += tempIntensite; // Ajout de l'intensité à la somme totale
+        Map<String, Integer> intensiteCountMap = new HashMap<>();
+
+        for (List<String> donnee : Donnees) {
+            Double intensite = Double.valueOf(donnee.get(donnee.size() - 2));
+
+            if (intensite >= minIntensite && intensite <= maxIntensite) {
+                String intensiteStr = String.valueOf(intensite);
+
+                // Vérifier si l'intensité existe déjà dans le map
+                if (intensiteCountMap.containsKey(intensiteStr)) {
+                    // Si oui, incrémenter le compteur correspondant
+                    intensiteCountMap.put(intensiteStr, intensiteCountMap.get(intensiteStr) + 1);
+                } else {
+                    // Sinon, ajouter une nouvelle entrée dans le map avec un compteur initial de 1
+                    intensiteCountMap.put(intensiteStr, 1);
+                }
             }
         }
 
-        for (int i = 0; i < Donnees.size(); i += 1) {
-            int tempIntensite = Integer.valueOf(Donnees.get(i).get(Donnees.size() - 2));
-            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
-                double percentage = (double) count / Donnees.size() * 100;
-                String categorie = "Catégorie " + (i + 1);
-                DonneesCamembert.add(new PieChart.Data(categorie, percentage));
-            }
-        }
-
-        // Calcul de la moyenne des intensités correspondant aux critères
-        double moyenneIntensite = calculateMoyenneIntensite(Donnees, minIntensite, maxIntensite);
-
-        // Mise à jour du texte du label moyenne avec la valeur calculée
-        moyenne.setText(String.format("%.2f", moyenneIntensite));
-
-    }
-
-    //Récupère les données du graphique en camembert.
-    public static ObservableList<PieChart.Data> getDonneesCamembert() {
-        return DonneesCamembert;
-    }
-    private double calculateMoyenneIntensite(List<List<String>> Donnees, int minIntensite, int maxIntensite) {
-        int count = 0;
-        int sum = 0;
-
-        for (int i = 0; i < Donnees.size(); i++) {
-            int tempIntensite = Integer.parseInt(Donnees.get(i).get(Donnees.size() - 2));
-            if (tempIntensite >= minIntensite && tempIntensite <= maxIntensite) {
-                count++;
-                sum += tempIntensite;
-            }
-        }
-
-        if (count > 0) {
-            return (double) sum / count;
-        } else {
-            return 0.0;
+        // Convertir le map en une liste de données pour le PieChart
+        for (Map.Entry<String, Integer> entry : intensiteCountMap.entrySet()) {
+            String intensite = entry.getKey();
+            Integer count = entry.getValue();
+            DonneesCamembert.add(new PieChart.Data(intensite, count));
         }
     }
 

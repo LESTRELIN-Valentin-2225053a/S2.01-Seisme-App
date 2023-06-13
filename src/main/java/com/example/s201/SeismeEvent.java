@@ -22,13 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeismeEvent{
+
+    @FXML
+    private Label moyenne;
+
+    @FXML
+    private PieChart camembert;
+
     @FXML
     private Label welcomeText;
     @FXML
     private BorderPane root;
-
-    @FXML
-    private PieChart camembert;
 
     @FXML
     private Slider sliderMin;
@@ -307,17 +311,50 @@ public class SeismeEvent{
             actualiser.setDisable(false);
         }
     }
+/*
+        private double calculateMoyenneIntensite(List<SeismeData> donnees, double minIntensite, double maxIntensite) {
+        int count = 0;
+        int sum = 0;
 
+        for (SeismeData donnee : donnees) {
+            double intensite = donnee.getIntensite();
+            if (intensite >= minIntensite && intensite <= maxIntensite) {
+                count++;
+                sum += intensite;
+            }
+        }
 
+        if (count > 0) {
+            return (double) sum / count;
+        } else {
+            return 0.0;
+        }
+    }
 
+    public void prepDonneesCamembert(List<SeismeData> donnees, double sliderMin, double sliderMax) {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
+        // Parcours les données pour construire les segments du camembert
+        for (SeismeData donnee : donnees) {
+            double intensite = donnee.getIntensite();
+            if (intensite >= sliderMin && intensite <= sliderMax) {
+                PieChart.Data data = new PieChart.Data(donnee.getCategorie(), intensite);
+                pieChartData.add(data);
+            }
+        }
 
+        // Calcul de la moyenne des intensités
+        double moyenneIntensite = calculateMoyenneIntensite(donnees, sliderMin, sliderMax);
 
+        // Mise à jour du texte du label moyenne avec la valeur calculée
+        moyenne.setText(String.format("%.2f", moyenneIntensite));
 
+        // Définir les données du camembert
+        camembert.setData(pieChartData);
+    }
 
-
-
-
-
-
+    public static ObservableList<PieChart.Data> getDonneesCamembert() {
+        return DonneesCamembert;
+*/
+    
 }
