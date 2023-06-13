@@ -15,6 +15,8 @@ import com.example.s201.SeismeData;
 
 import java.io.File;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class SeismeEvent{
     NumberAxis xAxis = new NumberAxis();
     NumberAxis yAxis = new NumberAxis();
     LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
     @FXML
     private ChoiceBox regions;
     ArrayList<String> regionsList = new ArrayList<>();
@@ -151,7 +154,6 @@ public class SeismeEvent{
             Double anneemax = Double.valueOf(StringDatemax[0]);
             SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), anneemin, anneemax,
                     GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
-
         } else {
             //Faudra mettre un label qui dit "faut choisir un fichier"
         }
@@ -241,14 +243,24 @@ public class SeismeEvent{
         bas.getChildren().add(diagrammePoint);
     }
     @FXML
-    public void actualiserOnAction(){
+    public void actualiserOnAction() throws ParseException {
         /*
         Afficher les données sur la BarChart
          */
         diagrammeaPoint.setDisable(true);
         courbeButton.setDisable(false);
+        String[] anneeDebut = dateDebut.getText().split("/+");
+        String[] anneeFin = dateFin.getText().split("/+");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+        bas.getChildren().clear();
+
+        SeismeData.getDonneesLineChart().clear();
+        SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), Double.parseDouble(anneeDebut[0]), Double.parseDouble(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue());
+
+        SeismeData.getDonneesScatterchart().clear();
+        SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+
+        bas.getChildren().add(diagrammePoint);
     }
-
-
-
 }
