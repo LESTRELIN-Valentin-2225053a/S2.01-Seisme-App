@@ -135,7 +135,7 @@ public class SeismeEvent{
         //Initialisation du camembert
         SeismeData seismeData = new SeismeData();
         //seismeData.prepDonneesCamembert(donnees, sliderMin, sliderMax);
-        camembert.setData(SeismeData.getDonneesCamembert());
+        //camembert.setData(SeismeData.getDonneesCamembert());
 
         //Initialisation du bouton actualiser
         actualiser.setDisable(true);
