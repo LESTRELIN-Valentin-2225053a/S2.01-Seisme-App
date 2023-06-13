@@ -280,6 +280,7 @@ public class SeismeEvent{
 
     public void SetPointOnMap(LocalDate minDate, LocalDate maxDate, Double minIntensite, Double maxIntensite){
         data.prepDonneesMap(minDate, maxDate, minIntensite, maxIntensite);
+        mapLayout.misAJourList();
         for (int i=0; i < data.getPointMapDonnees().size(); i+=1){
             mapLayout.ajouterPoint(data.getPointMapDonnees().get(i).getKey(), data.getPointMapDonnees().get(i).getValue());
         }

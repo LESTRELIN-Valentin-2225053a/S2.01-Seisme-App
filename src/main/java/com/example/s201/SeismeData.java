@@ -116,11 +116,6 @@ public  class  SeismeData {
 
     }
 
-   // @Override
-   // public void initialize(URL url, ResourceBundle resourceBundle) {
-   //     SerieDonneesBarchart.setData(DonneesBarchart);
-   // }
-
     //Récupère les données du graphique en camembert.
     public static ObservableList<PieChart.Data> getDonneesCamembert() {
         return DonneesCamembert;

@@ -40,6 +40,13 @@ public class CustomMapLayer extends MapLayer {
         this.getChildren().setAll(cerclePoint);
     }
 
+    public void misAJourList(){
+        if (this.cerclePoint.size() != 0)
+            this.cerclePoint.clear();
+        if (this.mapPoint.size() != 0)
+            this.mapPoint.clear();
+    }
+
     /* La fonction est appelée à chaque rafraichissement de la carte */
     @Override
     protected void layoutLayer() {
