@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+//Cette classe gère les point affichés sur la carte
 public class CustomMapLayer extends MapLayer {
     private ObservableList<MapPoint> mapPoint;
     private ObservableList<Circle> cerclePoint;

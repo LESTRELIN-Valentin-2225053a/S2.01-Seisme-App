@@ -155,15 +155,13 @@ public class SeismeEvent{
             //lance la configuration du CSV
             GestionDonneesCSV.lectureCSV(fichierCSV);
             SeismeData.prepDonneesScatterchart(GestionDonneesCSV.getDateMin(), GestionDonneesCSV.getDateMax(),
-                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
-            String[] StringDatemin = String.valueOf(GestionDonneesCSV.getDateMin()).split("-+");
-            String[] StringDatemax = String.valueOf(GestionDonneesCSV.getDateMax()).split("-+");
-            Double anneemin = Double.valueOf(StringDatemin[0]);
-            Double anneemax = Double.valueOf(StringDatemax[0]);
-            SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), anneemin, anneemax,
-                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax(), "");
+            String[] anneeDebut = String.valueOf(GestionDonneesCSV.getDateMin()).split("-+");
+            String[] anneeFin = String.valueOf(GestionDonneesCSV.getDateMax()).split("-+");
+            SeismeData.prepdonneesCourbe(Integer.parseInt(anneeDebut[0]), Integer.parseInt(anneeFin[0]),
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax(), "");
             SetPointOnMap(GestionDonneesCSV.getDateMin(), GestionDonneesCSV.getDateMax(),
-                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax());
+                    GestionDonneesCSV.getIntensiteMin(), GestionDonneesCSV.getIntensiteMax(), "");
 
         } else {
             showAlert("Veuillez choisir un fichier !");
@@ -237,8 +235,8 @@ public class SeismeEvent{
         bas.getChildren().add(lineChart);
         lineChart.setPrefWidth(1100);
         lineChart.setPrefHeight(200);
-        lineChart.setTitle("Intensité en fonction des années");
-        yAxis.setLabel("Intensité");
+        lineChart.setTitle("Nombres de seismes par années");
+        yAxis.setLabel("Nombres");
         xAxis.setLabel("Années");
         xAxis.setLowerBound(1100);
         xAxis.setUpperBound(2100);
@@ -264,19 +262,20 @@ public class SeismeEvent{
 
         bas.getChildren().clear();
             SeismeData.getDonneesLineChart().clear();
-            SeismeData.prepdonneesCourbe(GestionDonneesCSV.getDonnees(), Double.parseDouble(anneeDebut[0]), Double.parseDouble(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue());
+            SeismeData.prepdonneesCourbe(Integer.parseInt(anneeDebut[0]), Integer.parseInt(anneeFin[0]), sliderMin.getValue(), sliderMax.getValue(), "");
 
             SeismeData.getDonneesScatterchart().clear();
-            SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+            SeismeData.prepDonneesScatterchart(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), "");
         bas.getChildren().add(diagrammePoint);
 
         carte.getChildren().clear();
             SeismeData.getPointMapDonnees().clear();
             //SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
-            SetPointOnMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+            SetPointOnMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue(), "");
             carte.getChildren().add(Map);
     }
 
+    //Initialise la carte
     public void InitMap(){
         System.setProperty("javafx.platform", "desktop");
         System.setProperty("http.agent", "Gluon Mobile/1.0.3");
@@ -288,8 +287,9 @@ public class SeismeEvent{
         Map.setZoom(5);
     }
 
-    public void SetPointOnMap(LocalDate minDate, LocalDate maxDate, Double minIntensite, Double maxIntensite){
-        data.prepDonneesMap(minDate, maxDate, minIntensite, maxIntensite);
+    //Affiche les points sur la carte selon les données et les filtres
+    public void SetPointOnMap(LocalDate minDate, LocalDate maxDate, Double minIntensite, Double maxIntensite, String Region){
+        data.prepDonneesMap(minDate, maxDate, minIntensite, maxIntensite, Region);
         mapLayout.misAJourList();
         for (int i=0; i < data.getPointMapDonnees().size(); i+=1){
             mapLayout.ajouterPoint(data.getPointMapDonnees().get(i).getKey(), data.getPointMapDonnees().get(i).getValue());

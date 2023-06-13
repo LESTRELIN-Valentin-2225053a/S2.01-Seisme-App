@@ -61,15 +61,9 @@ public class GestionDonneesCSV {
             }
         }
         minMaxFiltre();
-        //Test pour vérifier que tout marche (à enlever plus tard)
- /*       for (int i = 0; i < Données.size(); i+=1){
-            for (int y = 0; y < Données.get(i).size(); y+=1){
-                System.out.println(Données.get(i).get(y));
-            }
-            System.out.println("Suivant");
-        }*/
     }
 
+    //Permet d'avoir les filtres par défaut du fichier, c'est à dire le minimum est le maximum du csv
     public static void minMaxFiltre() throws ParseException {
         List<Double> intensiteTri = new ArrayList<>();
         List<LocalDate> dateTri = new ArrayList<>();
@@ -90,6 +84,7 @@ public class GestionDonneesCSV {
         dateMax = dateTri.get(dateDonnees.size() - 1);
     }
 
+    //Permet le formatage de date, sous le format "yyyy/MM/dd"
     public static LocalDate parseDate(String dateStr) {
         try {
             if (dateStr.matches("\\d{4}/\\d{2}/\\d{2}")) {
