@@ -12,7 +12,7 @@ BorderPane{
     -fx-padding: 15 15 15 15;
 }
 
-#carte {
+#carte, #Map {
     -fx-background-color: white;
     -fx-background-radius: 15;
 }
