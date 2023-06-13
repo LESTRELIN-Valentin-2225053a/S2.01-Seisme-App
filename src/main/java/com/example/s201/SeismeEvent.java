@@ -123,7 +123,7 @@ public class SeismeEvent{
         //Initialisation du Barchart
         SeismeData.SerieDonneesScatterchart.setData(SeismeData.getDonneesScatterchart());
         diagrammePoint.getData().add(SeismeData.SerieDonneesScatterchart);
-
+        SeismeData.SerieDonneesLineChart.setData(SeismeData.getDonneesLineChart());
         lineChart.getData().add(SeismeData.SerieDonneesLineChart);
 
         //Initialisation du camembert

@@ -167,4 +167,8 @@ public  class  SeismeData {
     public static ObservableList<XYChart.Data<String, Number>> getDonneesScatterchart() {
         return DonneesScatterchart;
     }
+
+    public static ObservableList<XYChart.Data<Number, Number>> getDonneesLineChart() {
+        return DonneesLineChart;
+    }
 }
