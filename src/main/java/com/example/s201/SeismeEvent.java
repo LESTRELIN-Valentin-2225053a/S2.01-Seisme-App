@@ -135,6 +135,14 @@ public class SeismeEvent{
 
         //Initialisation du bouton actualiser
         actualiser.setDisable(true);
+
+        //Initialisation des TextField
+        dateDebut.setText(null);
+        dateFin.setText(null);
+
+        //Initialisation du bouton nuage de points
+        diagrammeaPoint.setDisable(true);
+
     }
 
     //Cette fonction est utilisé par le bouton "Inserer" et sert à
@@ -181,10 +189,24 @@ public class SeismeEvent{
     //si la date saisi dans les textField ne correspondent pas au format souhaité
     @FXML
     public void textField1dOnAction() {
+        String date = dateDebut.getText();
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            dateDebut.setText(null);
+        }
         actualiserIsOk();
     }
     @FXML
     public void textField2dOnAction() {
+        String date = dateFin.getText();
+        if (!isValidDate(date)){
+            showAlert("Format de date invalide !");
+            dateFin.setText(null);
+        }
+        else if (dateDebut.getText().compareTo(date) > 0){
+            showAlert("La date de fin doit être supérieure à la date de début !");
+            dateFin.setText(null);
+        }
         actualiserIsOk();
     }
 
@@ -246,8 +268,9 @@ public class SeismeEvent{
 
         carte.getChildren().clear();
             SeismeData.getPointMapDonnees().clear();
-            SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
-        carte.getChildren().add(Map);
+            //SeismeData.prepDonneesMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+            SetPointOnMap(LocalDate.parse(dateDebut.getText(), formatter), LocalDate.parse(dateFin.getText(), formatter), sliderMin.getValue(), sliderMax.getValue());
+            carte.getChildren().add(Map);
     }
 
     public void InitMap(){
@@ -270,22 +293,6 @@ public class SeismeEvent{
     }
 
     public  void actualiserIsOk(){
-        String debutDate = dateDebut.getText();
-        String finDate = dateFin.getText();
-
-        if (!isValidDate(debutDate)){
-            showAlert("Format de date invalide !");
-            dateDebut.setText(null);
-        }
-        if (!isValidDate(finDate)){
-            showAlert("Format de date invalide !");
-            dateFin.setText(null);
-        }
-        if (debutDate.compareTo(finDate) > 0){
-            showAlert("La date de fin doit être supérieure à la date de début !");
-            dateFin.setText(null);
-        }
-
         if(regions.getValue() != null && dateDebut.getText() != null && dateFin.getText() != null) {
             actualiser.setDisable(false);
         }
